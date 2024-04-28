@@ -1,4 +1,4 @@
-package com.spiritcoder.musalalogistics.config;
+package com.spiritcoder.musalalogistics.commons.config;
 
 import com.spiritcoder.musalalogistics.job.JobSchedule;
 import org.springframework.context.annotation.Bean;

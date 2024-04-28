@@ -16,6 +16,8 @@ public class ActivateNewlyAddedDronesJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        // retrieve all newly registered drones that not yet activated
+        // insert into
         LOG.info(" we are making progress bit by bit =====> ");
     }
 

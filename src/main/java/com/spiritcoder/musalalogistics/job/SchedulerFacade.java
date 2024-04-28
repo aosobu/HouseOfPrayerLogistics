@@ -1,6 +1,6 @@
 package com.spiritcoder.musalalogistics.job;
 
-import com.spiritcoder.musalalogistics.exception.MusalaLogisticsException;
+import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
 import com.spiritcoder.musalalogistics.job.jobimpl.ActivateNewlyAddedDronesJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +23,13 @@ public class SchedulerFacade {
     }
 
     public void scheduleJob(final Class jobClass, ScheduleTypeEnum scheduleTypeEnum){
+        String SCHEDULE_SUFFIX = "JobSchedule";
 
         try{
-
             if (scheduleTypeEnum != null) {
                 scheduleType = scheduleTypeEnum.toString();
             }
-
-            scheduleType = scheduleType.toLowerCase().concat("JobSchedule");
+            scheduleType = scheduleType.toLowerCase().concat(SCHEDULE_SUFFIX);
             jobScheduleMap.get(scheduleType).scheduleJob(jobClass);
 
         }catch (MusalaLogisticsException musalaLogisticsException){
