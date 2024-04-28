@@ -1,20 +1,21 @@
-package com.spiritcoder.musalalogistics.job.jobconfig;
+package com.spiritcoder.musalalogistics.job.scheduler;
 
+import com.spiritcoder.musalalogistics.job.model.QuartzTimerInfo;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class JobScheduler {
+public class QuartzScheduler {
 
-    private final SchedulerService scheduler;
+    private final QuartzSchedulerService scheduler;
 
-    public void scheduleJob(final Class jobClass, TimerInfo info) {
+    public void scheduleJob(final Class jobClass, QuartzTimerInfo info) {
         info = getTimerInfoDetails(info, jobClass.getName());
         scheduler.schedule(jobClass, info);
     }
 
-    private TimerInfo getTimerInfoDetails(TimerInfo info, String className) {
+    private QuartzTimerInfo getTimerInfoDetails(QuartzTimerInfo info, String className) {
         info.setCronExpression(getCronExpression(className));
         return info;
     }

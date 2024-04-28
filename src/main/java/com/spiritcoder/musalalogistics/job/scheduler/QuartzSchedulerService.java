@@ -1,6 +1,8 @@
-package com.spiritcoder.musalalogistics.job.jobconfig;
+package com.spiritcoder.musalalogistics.job.scheduler;
 
-import com.spiritcoder.musalalogistics.job.HelloWorldJob;
+import com.spiritcoder.musalalogistics.job.jobimpl.ActivateNewlyAddedDronesJob;
+import com.spiritcoder.musalalogistics.job.model.QuartzTimerInfo;
+import com.spiritcoder.musalalogistics.job.utils.QuartzTimerUtils;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RequiredArgsConstructor
-public class SchedulerService {
+public class QuartzSchedulerService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HelloWorldJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivateNewlyAddedDronesJob.class);
 
     private final Scheduler scheduler;
 
-    public  void schedule(final Class jobClass, final TimerInfo info) {
-        final JobDetail jobDetail = TimerUtils.buildJobDetail(jobClass, info);
-        final Trigger trigger = TimerUtils.buildTrigger(jobClass, info);
+    public  void schedule(final Class jobClass, final QuartzTimerInfo info) {
+        final JobDetail jobDetail = QuartzTimerUtils.buildJobDetail(jobClass, info);
+        final Trigger trigger = QuartzTimerUtils.buildTrigger(jobClass, info);
 
         try {
             scheduler.scheduleJob(jobDetail, trigger);

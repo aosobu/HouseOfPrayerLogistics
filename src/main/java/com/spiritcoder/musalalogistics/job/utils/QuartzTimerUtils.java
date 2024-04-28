@@ -1,12 +1,13 @@
-package com.spiritcoder.musalalogistics.job.jobconfig;
+package com.spiritcoder.musalalogistics.job.utils;
 
+import com.spiritcoder.musalalogistics.job.model.QuartzTimerInfo;
 import org.quartz.*;
 
-public final class TimerUtils {
+public final class QuartzTimerUtils {
 
-        private TimerUtils() {}
+        private QuartzTimerUtils() {}
 
-        public static JobDetail buildJobDetail(final Class jobClass, final TimerInfo info) {
+        public static JobDetail buildJobDetail(final Class jobClass, final QuartzTimerInfo info) {
             final JobDataMap jobDataMap = new JobDataMap();
             jobDataMap.put(jobClass.getSimpleName(), info);
 
@@ -17,7 +18,7 @@ public final class TimerUtils {
                     .build();
         }
 
-        public static Trigger buildTrigger(final Class jobClass, final TimerInfo info) {
+        public static Trigger buildTrigger(final Class jobClass, final QuartzTimerInfo info) {
             CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(info.getCronExpression());
 
             return TriggerBuilder
