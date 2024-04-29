@@ -33,11 +33,12 @@ BEGIN
     CREATE TABLE DroneStateSnapshot (
         id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
         state varchar(20) FOREIGN KEY REFERENCES DroneStateType(type) NOT NULL,
-        drone INT FOREIGN KEY REFERENCES Drone(ID) NOT NULL,
+        drone INT FOREIGN KEY REFERENCES Drone(id) NOT NULL,
         created DATETIME NOT NULL DEFAULT(getDate()),
         updated DATETIME NOT NULL DEFAULT(getDate()),
         creator varchar(50) NOT NULL default('system'),
-        updater varchar(50) NOT NULL default('system')
+        updater varchar(50) NOT NULL default('system'),
+        CONSTRAINT DRONE_CHECK CHECK( drone != select id from DroneStateSnapshot )
     )
 END
 
