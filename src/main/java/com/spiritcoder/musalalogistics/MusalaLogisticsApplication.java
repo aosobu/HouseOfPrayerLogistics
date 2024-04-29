@@ -1,29 +1,11 @@
 package com.spiritcoder.musalalogistics;
 
-import com.spiritcoder.musalalogistics.drone.repository.DroneRepositoryManagerImpl;
-import com.spiritcoder.musalalogistics.job.SchedulerFacade;
-import com.spiritcoder.musalalogistics.job.jobimpl.ActivateNewlyAddedDronesJob;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MusalaLogisticsApplication implements CommandLineRunner {
-
-	@Autowired
-	private SchedulerFacade schedulerFacade;
-
-	@Autowired
-	private DroneRepositoryManagerImpl droneRepositoryManager;
-
+public class MusalaLogisticsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MusalaLogisticsApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		schedulerFacade.scheduleJob(ActivateNewlyAddedDronesJob.class, null);
-		droneRepositoryManager.getAllInActiveDrones();
 	}
 }

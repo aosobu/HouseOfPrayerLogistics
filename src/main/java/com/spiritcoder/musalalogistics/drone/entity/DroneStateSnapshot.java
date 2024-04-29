@@ -14,12 +14,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Drone  extends AbstractAuditable {
+public class DroneStateSnapshot extends AbstractAuditable {
     @Id
     @GeneratedValue
     private Integer id;
-    private String serial;
-    private String model;
-    private int weight;
-    private boolean activated;
+    private String state;
+    private Integer drone;
 }

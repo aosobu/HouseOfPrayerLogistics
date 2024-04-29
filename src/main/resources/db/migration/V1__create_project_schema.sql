@@ -1,8 +1,8 @@
--- creates table Drone - stores information about all registered drones
+-- creates table Drone which stores information about all registered drones
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Drone' and xtype='U')
 BEGIN
     CREATE TABLE Drone (
-        id INT NOT NULL PRIMARY KEY,
+        id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
         serial varchar(100) NOT NULL UNIQUE,
         model varchar(15) NOT NULL,
         weight SMALLINT NOT NULL,
@@ -15,32 +15,46 @@ BEGIN
 END
 
 ---- creates table DroneState table which contains the list of possible drone states
---IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DroneStateType' and xtype='U')
---BEGIN
---    CREATE TABLE DroneStateType (
---        id INT NOT NULL PRIMARY KEY,
---        type varchar(20) UNIQUE NOT NULL,
---        created DATETIME NOT NULL DEFAULT(getDate()),
---        updated DATETIME NOT NULL DEFAULT(getDate()),
---        creator varchar(50) NOT NULL default('system'),
---        updater varchar(50) NOT NULL default('system')
---    )
---END
---
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DroneStateType' and xtype='U')
+BEGIN
+    CREATE TABLE DroneStateType (
+        id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+        type varchar(20) UNIQUE NOT NULL,
+        created DATETIME NOT NULL DEFAULT(getDate()),
+        updated DATETIME NOT NULL DEFAULT(getDate()),
+        creator varchar(50) NOT NULL default('system'),
+        updater varchar(50) NOT NULL default('system')
+    )
+END
+
 ---- creates table DroneStateSnapshot table that holds current state for all active drones
---IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DroneStateSnapshot' and xtype='U')
---BEGIN
---    CREATE TABLE DroneStateSnapshot (
---        id INT NOT NULL PRIMARY KEY,d
---        type varchar(20) FOREIGN KEY REFERENCES DroneStateType(type) NOT NULL,
---        drone INT FOREIGN KEY REFERENCES Drone(ID) NOT NULL,
---        created DATETIME NOT NULL DEFAULT(getDate()),
---        updated DATETIME NOT NULL DEFAULT(getDate()),
---        creator varchar(50) NOT NULL default('system'),
---        updater varchar(50) NOT NULL default('system')
---    )
---END
---
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DroneStateSnapshot' and xtype='U')
+BEGIN
+    CREATE TABLE DroneStateSnapshot (
+        id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+        state varchar(20) FOREIGN KEY REFERENCES DroneStateType(type) NOT NULL,
+        drone INT FOREIGN KEY REFERENCES Drone(ID) NOT NULL,
+        created DATETIME NOT NULL DEFAULT(getDate()),
+        updated DATETIME NOT NULL DEFAULT(getDate()),
+        creator varchar(50) NOT NULL default('system'),
+        updater varchar(50) NOT NULL default('system')
+    )
+END
+
+---- creates table Property table that holds state properties
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Property' and xtype='U')
+BEGIN
+    CREATE TABLE Property (
+        id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+        property varchar(100) NOT NULL UNIQUE,
+        state varchar(100) NOT NULL,
+        created DATETIME NOT NULL DEFAULT(getDate()),
+        updated DATETIME NOT NULL DEFAULT(getDate()),
+        creator varchar(50) NOT NULL default('system'),
+        updater varchar(50) NOT NULL default('system')
+    )
+END
+
 ---- creates table DroneActivity - journals all events of a drone
 --IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DroneActivity' and xtype='U')
 --BEGIN

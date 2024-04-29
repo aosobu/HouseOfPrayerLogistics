@@ -1,6 +1,6 @@
 package com.spiritcoder.musalalogistics.job.scheduler;
 
-import com.spiritcoder.musalalogistics.job.jobimpl.ActivateNewlyAddedDronesJob;
+import com.spiritcoder.musalalogistics.job.batchjobs.ActivateNewlyAddedDronesJob;
 import com.spiritcoder.musalalogistics.job.model.QuartzTimerInfo;
 import com.spiritcoder.musalalogistics.job.utils.QuartzTimerUtils;
 import jakarta.annotation.PostConstruct;
@@ -35,6 +35,7 @@ public class QuartzSchedulerService {
     public void init(){
         try{
             scheduler.start();
+            LOG.info("scheduler staring up .....");
         }catch (SchedulerException schedulerException){
             LOG.error(schedulerException.getMessage());
         }
@@ -44,6 +45,7 @@ public class QuartzSchedulerService {
     public void preDestroy(){
         try{
             scheduler.shutdown();
+            LOG.info("schdeuler shutting down ......");
         }catch (SchedulerException schedulerException){
             LOG.error(schedulerException.getMessage());
         }

@@ -1,26 +1,21 @@
 package com.spiritcoder.musalalogistics.job;
 
 import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
-import com.spiritcoder.musalalogistics.job.jobimpl.ActivateNewlyAddedDronesJob;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class SchedulerFacade {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerFacade.class);
     private final Map< String , JobSchedule> jobScheduleMap;
 
     private String scheduleType = ScheduleTypeEnum.QUARTZ.toString();
-
-    @Autowired
-    public SchedulerFacade(Map<String, JobSchedule> jobScheduleMap) {
-        this.jobScheduleMap = jobScheduleMap;
-    }
 
     public void scheduleJob(final Class jobClass, ScheduleTypeEnum scheduleTypeEnum){
         String SCHEDULE_SUFFIX = "JobSchedule";
