@@ -3,15 +3,15 @@ package com.spiritcoder.musalalogistics.job;
 import com.spiritcoder.musalalogistics.job.model.QuartzTimerInfo;
 import com.spiritcoder.musalalogistics.job.scheduler.QuartzScheduler;
 import com.spiritcoder.musalalogistics.job.scheduler.QuartzSchedulerService;
+import lombok.RequiredArgsConstructor;
 import org.quartz.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class QuartzJobSchedule implements JobSchedule {
 
-    @Autowired
-    private Scheduler scheduler;
+    private final Scheduler scheduler;
 
     @Override
     public void scheduleJob(Class jobClass) {

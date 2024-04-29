@@ -13,9 +13,10 @@ import java.util.Map;
 public class SchedulerFacade {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerFacade.class);
+
     private final Map< String , JobSchedule> jobScheduleMap;
 
-    private String scheduleType = ScheduleTypeEnum.QUARTZ.toString();
+    private String scheduleType = ScheduleTypeEnum.QUARTZ.toString(); //defaults to QUARTZ
 
     public void scheduleJob(final Class jobClass, ScheduleTypeEnum scheduleTypeEnum){
         String SCHEDULE_SUFFIX = "JobSchedule";

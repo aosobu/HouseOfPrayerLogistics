@@ -2,11 +2,11 @@ package com.spiritcoder.musalalogistics.drone.repository;
 
 import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
 import com.spiritcoder.musalalogistics.drone.entity.Drone;
+import com.spiritcoder.musalalogistics.drone.entity.DroneStateSnapshot;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +66,24 @@ public class DroneManagerImpl extends DroneManager {
     public boolean addDroneToDroneStateSnapshot(Integer droneId, String state) {
         try{
             droneStateSnapshotRepository.addDroneToDroneStateSnapshot(droneId, state);
+
+        }catch (MusalaLogisticsException musalaLogisticsException){
+
+            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Optional<List<DroneStateSnapshot>> findAllLoadableDrones() {
+        return droneStateSnapshotRepository.findAllLoadableDrones();
+    }
+
+    @Override
+    public boolean updateDroneStateSnapshot(String name, Integer id) {
+        try{
+            droneStateSnapshotRepository.updateDroneStateSnapshot(name, id);
 
         }catch (MusalaLogisticsException musalaLogisticsException){
 

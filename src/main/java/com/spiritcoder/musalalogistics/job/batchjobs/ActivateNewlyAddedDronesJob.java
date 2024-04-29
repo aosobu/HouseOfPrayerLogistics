@@ -23,7 +23,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 
-@Transactional
 @Component
 @RequiredArgsConstructor
 public class ActivateNewlyAddedDronesJob implements Job {
@@ -41,7 +40,7 @@ public class ActivateNewlyAddedDronesJob implements Job {
 
         try{
 
-            if(!droneActivationProcessingEnabled()) return; //prevents race condition
+            if(!isDroneActivationProcessingEnabled()) return; //prevents race condition
             
             lockActivateNewlyAddedDroneProcess(property);
             
@@ -54,6 +53,9 @@ public class ActivateNewlyAddedDronesJob implements Job {
         }catch(MusalaLogisticsException musalaLogisticsException){
 
             throw new MusalaLogisticsException(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+        }finally {
+
+            unlockActivateNewlyAddedDroneProcess(property);
         }
 
     }
@@ -67,6 +69,7 @@ public class ActivateNewlyAddedDronesJob implements Job {
         }
     }
 
+    @Transactional
     private void activateNewlyAddedDrones(Optional<List<Drone>> inactiveDrones) {
         String message;
 
@@ -88,6 +91,13 @@ public class ActivateNewlyAddedDronesJob implements Job {
         }
     }
 
+    private void publishMessage(boolean insertStatus, boolean updateActivationState, AtomicReference<String> atomicReference, Drone drone){
+        if(insertStatus && updateActivationState){
+            atomicReference.set(String.format(" Drone with id %d and serial number %s successfully activated", drone.getId(), drone.getSerial()));
+            LOG.info(atomicReference.get());
+        }
+    }
+
     private void lockActivateNewlyAddedDroneProcess(Property property) {
         try{
             propertyManager.updateProperty("false", property.getId());
@@ -97,7 +107,11 @@ public class ActivateNewlyAddedDronesJob implements Job {
         }
     }
 
-    private boolean droneActivationProcessingEnabled() {
+    /**
+     * This method performs a side effect on the property field
+     * @ return
+     */
+    private boolean isDroneActivationProcessingEnabled() {
         Optional<Property> property;
 
         try{
@@ -111,13 +125,6 @@ public class ActivateNewlyAddedDronesJob implements Job {
         this.property = property.get();
 
         return !property.get().getState().equals("false");
-    }
-    
-    private void publishMessage(boolean insertStatus, boolean updateActivationState, AtomicReference<String> atomicReference, Drone drone){
-        if(insertStatus && updateActivationState){
-            atomicReference.set(String.format(" Drone with id %d and serial number %s successfully activated", drone.getId(), drone.getSerial()));
-            LOG.info(atomicReference.get());
-        }
     }
     
     @PreDestroy
