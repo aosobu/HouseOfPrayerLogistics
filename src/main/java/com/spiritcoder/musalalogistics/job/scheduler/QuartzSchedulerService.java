@@ -1,6 +1,6 @@
 package com.spiritcoder.musalalogistics.job.scheduler;
 
-import com.spiritcoder.musalalogistics.job.batchjobs.ActivateNewlyAddedDronesJob;
+import com.spiritcoder.musalalogistics.job.batchjobs.DroneOnboardingJob;
 import com.spiritcoder.musalalogistics.job.model.QuartzTimerInfo;
 import com.spiritcoder.musalalogistics.job.utils.QuartzTimerUtils;
 import jakarta.annotation.PostConstruct;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class QuartzSchedulerService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ActivateNewlyAddedDronesJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DroneOnboardingJob.class);
 
     private final Scheduler scheduler;
 

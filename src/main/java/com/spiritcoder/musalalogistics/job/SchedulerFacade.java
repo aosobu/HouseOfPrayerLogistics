@@ -18,7 +18,7 @@ public class SchedulerFacade {
 
     private String scheduleType = ScheduleTypeEnum.QUARTZ.toString(); //defaults to QUARTZ
 
-    public void scheduleJob(final Class jobClass, ScheduleTypeEnum scheduleTypeEnum){
+    public <T> void scheduleJob(final Class<T> jobClass, ScheduleTypeEnum scheduleTypeEnum){
         String SCHEDULE_SUFFIX = "JobSchedule";
 
         try{

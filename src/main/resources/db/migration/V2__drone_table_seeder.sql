@@ -1,11 +1,11 @@
 insert into drone (serial, model, weight)
-values ('XVH5547894734UTPO', 'HEAVYWEIGHT', 500);
+values ('XVH5547894734UTPA', 'HEAVYWEIGHT', 500);
 
 insert into drone (serial, model, weight)
-values ('XVH5548974734UTPO', 'WEIGHT', 400);
+values ('XVH5548974734UTPB', 'WEIGHT', 400);
 
 insert into drone (serial, model, weight)
-values ('XVH5549074734UTPO', 'LIGHTWEIGHT', 500);
+values ('XVH5549074734UTPC', 'LIGHTWEIGHT', 500);
 
 insert into drone (serial, model, weight)
-values ('XVH5677674734UTPO', 'CRUISERWEIGHT', 400);
+values ('XVH5677674734UTPD', 'CRUISERWEIGHT', 400);

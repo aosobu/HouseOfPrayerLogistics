@@ -18,7 +18,10 @@ public class DroneManagerImpl extends DroneManager {
     private static final Logger LOG = LoggerFactory.getLogger(DroneManagerImpl.class);
 
     private final DroneRepository droneRepository;
+
     private final DroneStateSnapshotRepository droneStateSnapshotRepository;
+
+    private final DroneBatterySnapshotRepository droneBatterySnapshotRepository;
 
     @Override
     public Optional<List<Drone>> getAllActiveDrones() {
@@ -49,8 +52,17 @@ public class DroneManagerImpl extends DroneManager {
     }
 
     @Override
-    public Optional<Drone> getDroneById(Integer id) {
-        return Optional.empty();
+    public Drone getDroneById(Integer id) {
+
+        try{
+           Optional<Drone> drone =  droneRepository.findById(id);
+           return drone.orElse(null);
+
+        }catch(MusalaLogisticsException musalaLogisticsException){
+            //TODO:: Log error to database
+            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            return null;
+        }
     }
 
     @Override
@@ -85,6 +97,19 @@ public class DroneManagerImpl extends DroneManager {
     public boolean updateDroneStateSnapshot(String name, Integer id) {
         try{
             droneStateSnapshotRepository.updateDroneStateSnapshot(name, id);
+
+        }catch (MusalaLogisticsException musalaLogisticsException){
+
+            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addDroneToDroneBatterySnapshot(int batteryLevel, int droneId) {
+        try{
+            droneBatterySnapshotRepository.addDroneToDroneBatterySnapshot(batteryLevel, droneId);
 
         }catch (MusalaLogisticsException musalaLogisticsException){
 

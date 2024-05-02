@@ -5,11 +5,11 @@ import com.spiritcoder.musalalogistics.drone.entity.Drone;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class DroneManager implements DroneStateSnapshotManager {
+public abstract class DroneManager implements DroneStateSnapshotManager, DroneBatterySnapshotManager {
 
     public abstract Optional<Drone> getDroneBySerialNumber(String serialNumber);
 
-    public abstract Optional<Drone> getDroneById(Integer id);
+    public abstract Drone getDroneById(Integer id);
 
     public abstract Optional<List<Drone>> getDroneByModelType(String model);
 

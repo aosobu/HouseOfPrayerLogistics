@@ -4,6 +4,7 @@ import com.spiritcoder.musalalogistics.medication.entity.Medication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +20,8 @@ public class MedicationManagerImpl extends MedicationManager{
     }
 
     @Override
-    public Optional<List<Medication>> findAllUnloadedMedication() {
-        return Optional.empty();
+    public List<Medication> findAllLoadableMedication() {
+        return new ArrayList<>();
     }
 
     @Override

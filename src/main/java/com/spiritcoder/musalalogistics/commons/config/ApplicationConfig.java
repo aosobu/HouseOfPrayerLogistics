@@ -2,9 +2,10 @@ package com.spiritcoder.musalalogistics.commons.config;
 
 import com.spiritcoder.musalalogistics.job.JobSchedule;
 import com.spiritcoder.musalalogistics.job.SchedulerFacade;
-import com.spiritcoder.musalalogistics.job.batchjobs.ActivateNewlyAddedDronesJob;
+import com.spiritcoder.musalalogistics.job.batchjobs.DroneLazyLoaderJob;
+import com.spiritcoder.musalalogistics.job.batchjobs.DroneOnboardingJob;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
+@RequiredArgsConstructor
 public class ApplicationConfig {
 
-    @Autowired
-    private SchedulerFacade schedulerFacade;
+    private final SchedulerFacade schedulerFacade;
 
     @Bean("jobScheduleMap")
     public Map<String, JobSchedule> jobScheduleMap(List<JobSchedule> jobScheduleList){
@@ -27,7 +28,8 @@ public class ApplicationConfig {
 
     @PostConstruct
     public void initScheduler(){
-        schedulerFacade.scheduleJob(ActivateNewlyAddedDronesJob.class, null);
+        schedulerFacade.scheduleJob(DroneOnboardingJob.class, null);
+        schedulerFacade.scheduleJob(DroneLazyLoaderJob.class, null);
     }
 
 }

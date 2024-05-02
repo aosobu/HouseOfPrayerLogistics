@@ -10,7 +10,7 @@ public abstract class MedicationManager {
 
     public abstract Optional<List<Medication>> findAllMedication();
 
-    public abstract Optional<List<Medication>> findAllUnloadedMedication();
+    public abstract List<Medication> findAllLoadableMedication();
 
     public abstract Optional<List<Medication>> findAllMedicationByBatchId(int batchId);
 
