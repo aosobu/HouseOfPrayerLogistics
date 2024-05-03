@@ -18,7 +18,7 @@ public interface DroneStateSnapshotRepository extends JpaRepository<DroneStateSn
     @Query(value = "insert into DroneStateSnapshot(drone, state) values (?1, ?2)", nativeQuery = true)
     void addDroneToDroneStateSnapshot(Integer droneId, String state);
 
-    @Query(value = "select * from DroneStateSnapshot where state in ('IDLE', 'RETURNING')", nativeQuery = true)
+    @Query(value = "select * from DroneStateSnapshot where state in ('IDLE')", nativeQuery = true)
     Optional<List<DroneStateSnapshot>> findAllLoadableDrones();
 
     @Modifying

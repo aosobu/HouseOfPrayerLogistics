@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class QuartzJobSchedule implements JobSchedule {
+public class QuartzJobScheduler implements JobScheduler {
 
     private final Scheduler scheduler;
 

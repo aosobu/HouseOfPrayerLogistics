@@ -1,6 +1,5 @@
 package com.spiritcoder.musalalogistics.job;
 
-public enum ScheduleTypeEnum {
+public enum SchedulerTypeEnum {
     QUARTZ,
-    SPRING_SCHEDULER
 }

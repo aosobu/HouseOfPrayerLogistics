@@ -14,25 +14,30 @@ public class SchedulerFacade {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchedulerFacade.class);
 
-    private final Map< String , JobSchedule> jobScheduleMap;
+    private final Map< String , JobScheduler> jobScheduleMap;
 
-    private String scheduleType = ScheduleTypeEnum.QUARTZ.toString(); //defaults to QUARTZ
+    private String schedulerType = SchedulerTypeEnum.QUARTZ.toString(); //default scheduler
 
-    public <T> void scheduleJob(final Class<T> jobClass, ScheduleTypeEnum scheduleTypeEnum){
+    public <T> void scheduleJob(final Class<T> jobClass, SchedulerTypeEnum schedulerTypeEnum){
         String SCHEDULE_SUFFIX = "JobSchedule";
 
         try{
-            if (scheduleTypeEnum != null) {
-                scheduleType = scheduleTypeEnum.toString();
+            if (schedulerTypeEnum != null) {
+                schedulerType = "";
+                schedulerType = schedulerTypeEnum.toString();
             }
-            scheduleType = scheduleType.toLowerCase().concat(SCHEDULE_SUFFIX);
-            jobScheduleMap.get(scheduleType).scheduleJob(jobClass);
+            schedulerType = schedulerType.toLowerCase().concat(SCHEDULE_SUFFIX);
+            jobScheduleMap.get(schedulerType).scheduleJob(jobClass);
 
         }catch (MusalaLogisticsException musalaLogisticsException){
+
+            String message = String.format("%s was not scheduled with %s", jobClass.getSimpleName(), schedulerType);
+            LOG.error(message);
             throw new MusalaLogisticsException(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
         }
 
-        String message = String.format("%s was scheduled with %s", jobClass.getSimpleName(), scheduleType);
+        String message = String.format("%s was scheduled with %s", jobClass.getSimpleName(), schedulerType);
         LOG.info(message);
+        schedulerType = SchedulerTypeEnum.QUARTZ.toString(); // reset to default
     }
 }

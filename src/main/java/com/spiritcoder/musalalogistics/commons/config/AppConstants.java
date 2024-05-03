@@ -7,4 +7,6 @@ public class AppConstants {
     public static final String DRONE_LOADING_PROCESS_ENABLED = "drone.loading.process.enabled";
 
     public static final String DRONE_BATTERY_PROCESS_ENABLED = "drone.battery.process.enabled";
+
+    public static final String CACHES = "caches";
 }

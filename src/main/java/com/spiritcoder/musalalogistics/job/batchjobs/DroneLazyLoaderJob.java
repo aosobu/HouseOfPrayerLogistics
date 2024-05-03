@@ -53,9 +53,7 @@ public class DroneLazyLoaderJob implements Job {
 
             Optional<List<DroneStateSnapshot>> loadableDrones = droneManager.findAllLoadableDrones();
 
-            loadableDrones.orElseThrow();
-
-            loadDrone(loadableDrones.get());
+            loadableDrones.ifPresent(this::loadDrone);
 
             unlockDroneOnboardingProcess(property);
 

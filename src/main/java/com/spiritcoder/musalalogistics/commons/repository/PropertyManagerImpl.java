@@ -5,6 +5,7 @@ import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsExceptio
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,11 @@ public class PropertyManagerImpl implements PropertyManager{
     @Override
     public Optional<Property> getPropertyByKey(String key) {
         return propertyRepository.getPropertyByKey(key);
+    }
+
+    @Override
+    public Optional<List<Property>> getPropertyListByKey(String key) {
+        return propertyRepository.getPropertyListByKey(key);
     }
 
     @Override

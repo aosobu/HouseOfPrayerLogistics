@@ -59,7 +59,7 @@ public class DroneManagerImpl extends DroneManager {
            return drone.orElse(null);
 
         }catch(MusalaLogisticsException musalaLogisticsException){
-            //TODO:: Log error to database
+
             LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
             return null;
         }
