@@ -73,7 +73,6 @@ public class ApplicationConfig {
 
     @PostConstruct
     public void initScheduler(){
-        //schedulerFacade.scheduleJob(DroneOnboardingJob.class, null);
         //schedulerFacade.scheduleJob(DroneLazyLoaderJob.class, null);
     }
 

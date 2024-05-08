@@ -1,8 +1,6 @@
 package com.spiritcoder.musalalogistics.droneservice.repository;
 
 import com.spiritcoder.musalalogistics.droneservice.entity.Drone;
-import com.spiritcoder.musalalogistics.droneservice.enums.ModelEnum;
-import com.spiritcoder.musalalogistics.droneservice.enums.StateEnum;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,7 +27,7 @@ public interface DroneRepository extends JpaRepository<Drone, Integer> {
     @Modifying
     @Transactional
     @Query(value = "insert into drone(serial, model, weight, creator, updater, created) values (?1, ?2, ?3, ?4, ?5, getDate())", nativeQuery = true)
-    void insertDrone(String serial, ModelEnum model, short weight, String creator, String updater);
+    void insertDrone(String serial, String model, short weight, String creator, String updater);
 
     @Query(value = "select * from drone where serial = ?1", nativeQuery = true)
     Optional<Drone> findDroneBySerialNumber(String serial);

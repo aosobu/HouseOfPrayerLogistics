@@ -16,13 +16,11 @@ import java.util.List;
 @NoArgsConstructor
 public class UserResponse {
 
-    @JsonProperty("message")
     private String message;
 
     @JsonProperty("user")
     private UserDTO userDTO;
 
-    @JsonProperty("errors")
     private List<String> errors = new ArrayList<>();
 
     public boolean isEmptyErrorList(){

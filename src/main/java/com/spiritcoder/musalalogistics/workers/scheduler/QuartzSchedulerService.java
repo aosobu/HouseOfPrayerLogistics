@@ -1,6 +1,5 @@
 package com.spiritcoder.musalalogistics.workers.scheduler;
 
-import com.spiritcoder.musalalogistics.workers.batchjobs.DroneOnboardingJob;
 import com.spiritcoder.musalalogistics.workers.model.QuartzTimerInfo;
 import com.spiritcoder.musalalogistics.workers.utils.QuartzTimerUtils;
 import jakarta.annotation.PostConstruct;
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class QuartzSchedulerService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DroneOnboardingJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(QuartzSchedulerService.class);
 
     private final Scheduler scheduler;
 
@@ -35,7 +34,6 @@ public class QuartzSchedulerService {
     public void init(){
         try{
             scheduler.start();
-            LOG.info("scheduler staring up .....");
         }catch (SchedulerException schedulerException){
             LOG.error(schedulerException.getMessage());
         }
@@ -45,7 +43,6 @@ public class QuartzSchedulerService {
     public void preDestroy(){
         try{
             scheduler.shutdown();
-            LOG.info("schdeuler shutting down ......");
         }catch (SchedulerException schedulerException){
             LOG.error(schedulerException.getMessage());
         }

@@ -11,7 +11,7 @@ public class DroneLoaderComponent {
 
     private final DroneManager droneManager;
 
-    public DroneResponse loadDrone(String serialNumber){
+    public DroneResponse loadDrone(int droneId){
         return null;
     }
 }

@@ -14,7 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class DroneActivitySnapshot extends AbstractAuditable {
+public class DroneActivity extends AbstractAuditable {
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -22,4 +23,7 @@ public class DroneActivitySnapshot extends AbstractAuditable {
     private String state;
 
     private Integer drone;
+
+    private Integer batch;
+
 }

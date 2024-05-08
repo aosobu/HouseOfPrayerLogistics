@@ -27,6 +27,8 @@ public class DroneManagerImpl extends DroneManager {
 
     private final DroneBatteryRepository droneBatteryRepository;
 
+    private final DroneActivityRepository droneActivityRepository;
+
 
     @Override
     public Optional<List<Drone>> getAllInActiveDrones() {
@@ -49,7 +51,7 @@ public class DroneManagerImpl extends DroneManager {
     @Override
     public boolean insertDrone(String serial, ModelEnum model, short weight) {
         try{
-            droneRepository.insertDrone(serial, model, weight, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
+            droneRepository.insertDrone(serial, model.toString(), weight, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
         }catch(MusalaLogisticsException musalaLogisticsException){
 
@@ -62,7 +64,7 @@ public class DroneManagerImpl extends DroneManager {
     @Override
     public boolean insertDroneActivitySnapshot(StateEnum stateEnum, int droneId) {
         try{
-            droneActivitySnapshotRepository.insertDroneActivitySnapshot(droneId, stateEnum);
+            droneActivitySnapshotRepository.insertDroneActivitySnapshot(droneId, stateEnum.toString(), AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
         }catch(MusalaLogisticsException musalaLogisticsException){
 
@@ -112,7 +114,7 @@ public class DroneManagerImpl extends DroneManager {
     @Override
     public boolean insertDroneBatterySnapshotRecord(int droneId, byte battery) {
         try{
-            droneBatterySnapshotRepository.insertDroneBatterySnapshot(battery, droneId);
+            droneBatterySnapshotRepository.insertDroneBatterySnapshot(battery, droneId, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
         }catch (MusalaLogisticsException musalaLogisticsException){
 
@@ -125,7 +127,20 @@ public class DroneManagerImpl extends DroneManager {
     @Override
     public boolean insertDroneBattery(int droneId, byte batteryLevel) {
         try{
-            droneBatteryRepository.insertDroneBattery(droneId, batteryLevel);
+            droneBatteryRepository.insertDroneBattery(droneId, batteryLevel, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
+
+        }catch (MusalaLogisticsException musalaLogisticsException){
+
+            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean insertDroneActivity(int droneId, String state, Integer batch) {
+        try{
+            droneActivityRepository.insertDroneActivity(droneId, state, batch, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
         }catch (MusalaLogisticsException musalaLogisticsException){
 

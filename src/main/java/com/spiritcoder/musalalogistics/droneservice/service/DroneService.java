@@ -15,7 +15,7 @@ public class DroneService {
         return droneOperationsFacade.registerDrone(droneRequest);
     }
 
-    public DroneResponse loadDrone(String serialNumber){
-        return droneOperationsFacade.loadDrone(serialNumber);
+    public DroneResponse loadDrone(int droneId){
+        return droneOperationsFacade.loadDrone(droneId);
     }
 }

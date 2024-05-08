@@ -23,4 +23,12 @@ public class AppConstants {
     public static final String SCHEDULE_SUFFIX = "JobScheduler";
 
     public static final String SYSTEM_USER = "system_user";
+
+    public static final String DRONE_CACHE = "drone";
+
+    public static final String SUCCESS_MESSAGE = "success";
+
+    public static final String DUPLICATE_REGISTRATION = "duplicate registration";
+
+    public static final String FAILURE_REGISTRATION = "problem encountered during registration - please try again later";
 }

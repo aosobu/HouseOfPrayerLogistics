@@ -1,25 +1,26 @@
 package com.spiritcoder.musalalogistics.droneservice.api;
 
 import com.spiritcoder.musalalogistics.droneservice.enums.ModelEnum;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
 public class DroneRequest {
 
-    @Pattern(regexp = "")
+    @Pattern(regexp = "^.{1,100}$", message = "serial number cannot exceed 100 characters")
     @NotBlank
     private String serialNumber;
 
+    @NotNull(message = "model cannot be null or empty")
     private ModelEnum model;
 
-    @NotBlank
-    @Size(min=200, max=500)
+    @Min(value = 200, message = "weight should not be less than 200")
+    @Max(value = 500, message = "weight should not be greater than 5000")
+    @NotNull(message = "weight cannot be null or empty")
     private Short weight;
 
-    @NotBlank
-    @Size(max=100)
+    @Min(value = 0, message = "battery level should not be less than 0")
+    @Max(value = 100, message = "battery level should not be greater than 100")
+    @NotNull(message = "battery level cannot be null or empty")
     private Byte battery;
 }

@@ -16,8 +16,8 @@ public interface DroneActivitySnapshotRepository extends JpaRepository<DroneActi
 
     @Modifying
     @Transactional
-    @Query(value = "insert into DroneActivitySnapshot(drone, state) values (?1, ?2)", nativeQuery = true)
-    void insertDroneActivitySnapshot(Integer droneId, StateEnum state);
+    @Query(value = "insert into DroneActivitySnapshot(drone, state, creator, updater, created) values (?1, ?2, ?3, ?4, getDate())", nativeQuery = true)
+    void insertDroneActivitySnapshot(Integer droneId, String state, String creator, String updater);
 
     @Query(value = "select * from DroneActivitySnapshot where state in ('IDLE')", nativeQuery = true)
     Optional<List<DroneActivitySnapshot>> findAllLoadableDrones();

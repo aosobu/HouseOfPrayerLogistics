@@ -20,12 +20,12 @@ public class DroneController {
     }
 
     @PostMapping("/load")
-    public ResponseEntity<?> loadDrone(@RequestParam String serialNumber) {
-        return ResponseEntity.ok(droneService.loadDrone(serialNumber));
+    public ResponseEntity<?> loadDrone(@RequestParam int droneId) {
+        return ResponseEntity.ok(droneService.loadDrone(droneId));
     }
 
     @GetMapping("/items")
-    public ResponseEntity<?> getLoadedItems(@RequestParam String serialNumber) {
-        return ResponseEntity.ok(droneService.loadDrone(serialNumber));
+    public ResponseEntity<?> getLoadedItems(@RequestParam int droneId) {
+        return ResponseEntity.ok(droneService.loadDrone(droneId));
     }
 }

@@ -26,8 +26,6 @@ public class JwtAuthenticationProvider implements JwtAuthenticationManager {
 
     private UserRepository userRepository;
 
-    //private UserDetailsService userDetailsService;
-
     public void authenticate(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                              @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String jwt;
@@ -50,10 +48,6 @@ public class JwtAuthenticationProvider implements JwtAuthenticationManager {
 
         continueFilterChain(request, response, filterChain);
     }
-
-//    private UserDetails getUserDetails(String userEmail) {
-//        return userDetailsService.loadUserByUsername(userEmail);
-//    }
 
     private UserDetails getUserDetails(String userEmail) {
         return getUserByEmail(userEmail);

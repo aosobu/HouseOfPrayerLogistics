@@ -16,11 +16,11 @@ public class DroneOperationsFacade {
     private final DroneLoaderComponent droneLoaderComponent;
 
     public DroneResponse registerDrone(DroneRequest droneRequest){
-        return droneRegisterComponent.onboardDrone(droneRequest);
+        return droneRegisterComponent.registerDrone(droneRequest);
     }
 
-    public DroneResponse loadDrone(String serialNumber){
-       return droneLoaderComponent.loadDrone(serialNumber);
+    public DroneResponse loadDrone(int droneId){
+       return droneLoaderComponent.loadDrone(droneId);
     }
 
 }
