@@ -1,17 +1,17 @@
-insert into DroneStateType (type)
-values ('IDLE');
+insert into DroneStateType (type, created, creator, updater)
+values ('IDLE', getDate(), 'system', 'system');
 
-insert into DroneStateType (type)
-values ('LOADING');
+insert into DroneStateType (type, created, creator, updater)
+values ('LOADING', getDate(), 'system', 'system');
 
-insert into DroneStateType (type)
-values ('LOADED');
+insert into DroneStateType (type, created, creator, updater)
+values ('LOADED', getDate(), 'system', 'system');
 
-insert into DroneStateType(type)
-values ('DELIVERING');
+insert into DroneStateType (type, created, creator, updater)
+values ('DELIVERING', getDate(), 'system', 'system');
 
-insert into DroneStateType (type)
-values ('DELIVERED');
+insert into DroneStateType (type, created, creator, updater)
+values ('DELIVERED', getDate(), 'system', 'system');
 
-insert into DroneStateType (type)
-values ('RETURNING');
+insert into DroneStateType (type, created, creator, updater)
+values ('RETURNING', getDate(), 'system', 'system');

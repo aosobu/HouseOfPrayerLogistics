@@ -1,14 +1,14 @@
-insert into Property (property, state)
-values ('drone.new.activate.enabled', 'true');
+insert into Property (property, state, created)
+values ('drone.new.activate.enabled', 'true', getDate());
 
-insert into Property (property, state)
-values ('drone.loading.process.enabled', 'true');
+insert into Property (property, state, created)
+values ('drone.loading.process.enabled', 'true', getDate());
 
-insert into Property (property, state)
-values ('drone.battery.process.enabled', 'true');
+insert into Property (property, state, created)
+values ('drone.battery.process.enabled', 'true', getDate());
 
-insert into Property (property, state)
-values ('caches', 'drone');
+insert into Property (property, state, created)
+values ('caches', 'drone', getDate());
 
-insert into Property (property, state)
-values ('caches', 'medication');
+insert into Property (property, state, created)
+values ('caches', 'medication', getDate());

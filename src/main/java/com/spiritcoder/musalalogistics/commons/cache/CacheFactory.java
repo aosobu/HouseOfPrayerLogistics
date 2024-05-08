@@ -15,7 +15,14 @@ public class CacheFactory {
         this.cacheManager = cacheManager;
     }
 
-    public CacheManager getCacheManagerType(CacheTypeEnum cacheTypeEnum) {
-        return new SpringCacheManager(cacheManager); // default cache manager
+    public CacheManager getCacheManager(CacheTypeEnum cacheTypeEnum) {
+        if(cacheTypeEnum.equals(CacheTypeEnum.SPRING_CACHE)){
+            return getDefaultCacheManager();
+        }
+        return new SpringCacheManager(cacheManager);
+    }
+
+    private CacheManager getDefaultCacheManager() {
+        return new SpringCacheManager(cacheManager);
     }
 }
