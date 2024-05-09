@@ -105,7 +105,7 @@ public class DroneLoaderComponent {
                     }
 
                     int totalWeight = loadedItems.stream().mapToInt(Medication::getWeight).sum();
-                    message = String.format("total weight of items loaded for drone ( %s) with size %d  is %d ::  %s", cachedDrone.getSerialNumber(), cachedDrone.getWeight(), totalWeight);
+                    message = String.format("total weight of items loaded for drone with size %s  is %d ::  %s", cachedDrone.getSerialNumber(), cachedDrone.getWeight(), totalWeight);
                     publishEventMessage(message);
 
                     // get next batch

@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class LoadDroneViaControllerComponent {
+public class DroneEagerLoaderComponent {
 
     private static final Logger LOG = LoggerFactory.getLogger(DroneRegisterComponent.class);
 
