@@ -110,7 +110,7 @@ See postman collection for details
 
 # #Postman Collection
 
-The collection can be accessed at 
+The collection can be accessed at https://documenter.getpostman.com/view/13616841/2sA3JM5fs7
 
 
 
