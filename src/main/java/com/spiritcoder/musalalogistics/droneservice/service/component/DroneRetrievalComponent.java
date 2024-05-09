@@ -105,12 +105,100 @@ public class DroneRetrievalComponent {
         return buildResponseWithAvailableItems(cachedDrone.getCurrentBatchList(), cachedDrone.getId());
     }
 
+
+
+
+    public DroneResponse getLoadableDrones(){
+
+        Optional<List<Drone>> loadableDrones =  droneManager.findAllLoadableDrones();
+
+        List<DroneRecord> droneList2 =  new ArrayList<>();
+
+        if(!loadableDrones.isEmpty()){
+            List<Drone> droneList =  loadableDrones.get();
+
+            droneList.forEach(drone -> {
+                DroneRecord record = new DroneRecord(drone.getId(), drone.getSerial(), drone.getModel(), drone.getWeight());
+                droneList2.add(record);
+            });
+
+            return buildResponseWithAvailableItems(droneList2);
+        }
+
+        return buildResponseWithoutAvailableItems(droneList2);
+    }
+
+
+    public DroneResponse getBatteryLevel(int droneId){
+        DroneResponse droneResponse = new DroneResponse();
+
+        try{
+            cacheManager = cacheFactory.getCacheManager(CacheTypeEnum.REDIS);
+
+            if(cacheManager.isExists(AppConstants.DRONE_CACHE)){
+
+                droneResponse = getBatteryLevelFromCache(cacheManager, droneId);
+
+            }else {
+
+                droneResponse = getBatteryLevelFromRepository(droneId);
+            }
+        }catch(Exception exception){
+
+            LOG.error(exception.getMessage());
+            droneResponse = getBatteryLevelFromRepository(droneId);
+        }
+
+        return droneResponse;
+    }
+
+    private DroneResponse getBatteryLevelFromCache(CacheManager cacheManager, int droneId) {
+        DroneMetadata cachedDrone = null;
+
+        String droneKey = CacheUtil.generateKey(String.valueOf(droneId));
+        Optional<Object> cachedDroneObject = cacheManager.get(droneKey, AppConstants.DRONE_CACHE);
+
+        if(cachedDroneObject.isPresent()){
+            cachedDrone = (DroneMetadata) cachedDroneObject.get();
+        }
+
+        assert cachedDrone != null;
+        byte batteryLevel = cachedDrone.getCurrentBatteryLevel();
+
+        return buildAvailableBatteryLevel(batteryLevel);
+    }
+
+    private DroneResponse buildAvailableBatteryLevel(byte batteryLevel) {
+        DroneDTO droneDTO = new DroneDTO();
+        droneDTO.setBatteryLevel(batteryLevel);
+        return buildDroneResponse(null, AppConstants.SUCCESS_MESSAGE, droneDTO);
+    }
+
+    private DroneResponse getBatteryLevelFromRepository(int droneId) {
+        byte batteryLevel =  droneManager.getBatteryLevel(droneId);
+        return buildResponseWithBatteryDetails(batteryLevel);
+    }
+
+    private DroneResponse buildResponseWithBatteryDetails(byte batteryLevel){
+        DroneDTO droneDTO = new DroneDTO();
+        droneDTO.setBatteryLevel(batteryLevel);
+        return buildDroneResponse(null, AppConstants.SUCCESS_MESSAGE, droneDTO);
+    }
+
     private DroneResponse buildResponseWithAvailableItems(List<Medication> currentBatchList, int droneId) {
         return buildDroneResponse(null, AppConstants.SUCCESS_MESSAGE, buildDroneDTO(droneId, currentBatchList));
     }
 
+    private DroneResponse buildResponseWithAvailableItems(List<DroneRecord> droneRecords) {
+        return buildDroneResponse(null, AppConstants.SUCCESS_MESSAGE, buildDroneDTO(droneRecords));
+    }
+
     private DroneResponse buldUnavailableItemsDroneResponse() {
         return buildDroneResponse(AppConstants.DRONE_IN_IDLE_STATE, AppConstants.SUCCESS_MESSAGE, null);
+    }
+
+    private DroneResponse buildResponseWithoutAvailableItems(List<DroneRecord> droneList2) {
+        return buildDroneResponse(AppConstants.NO_DRONE_IN_IDLE_STATE, AppConstants.SUCCESS_MESSAGE, null);
     }
 
     public DroneResponse buildDroneResponse(String errorMessage, String message, DroneDTO droneDTO){
@@ -128,6 +216,14 @@ public class DroneRetrievalComponent {
         return  errors;
     }
 
+    private DroneDTO buildDroneDTO(List<DroneRecord> droneList2) {
+        DroneDTO droneDTO = new DroneDTO();
+        droneDTO.setId(0);
+        droneDTO.setLoadedItems(null);
+        droneDTO.setDroneRecords(droneList2);
+        return droneDTO;
+    }
+
     private DroneDTO buildDroneDTO(int id, List<Medication> items){
         if(id > 0 && !items.isEmpty()){
             DroneDTO droneDTO = new DroneDTO();
@@ -136,21 +232,5 @@ public class DroneRetrievalComponent {
             return droneDTO;
         }
         return null;
-    }
-
-    public List<DroneRecord> getLoadableDrones(){
-        Optional<List<Drone>> loadableDrones =  droneManager.findAllLoadableDrones();
-        List<DroneRecord> droneList2 =  new ArrayList<>();
-
-        if(!loadableDrones.isEmpty()){
-            List<Drone> droneList =  loadableDrones.get();
-
-            droneList.forEach(drone -> {
-                DroneRecord record = new DroneRecord(drone.getId(), drone.getSerial(), drone.getModel(), drone.getWeight());
-                droneList2.add(record);
-            });
-        }
-
-        return droneList2;
     }
 }

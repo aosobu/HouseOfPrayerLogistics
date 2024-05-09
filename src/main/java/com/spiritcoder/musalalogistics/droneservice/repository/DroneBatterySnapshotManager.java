@@ -4,4 +4,6 @@ public interface DroneBatterySnapshotManager {
 
     boolean insertDroneBatterySnapshotRecord(int droneId, byte battery);
 
+    byte getBatteryLevel(int droneId);
+
 }

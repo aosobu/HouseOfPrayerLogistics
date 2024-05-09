@@ -66,12 +66,15 @@ public class DroneLoaderComponent {
                 }
             }
 
+            if(droneList.isEmpty()){
+                return false;
+            }
+
             //get last batch id
             Optional<DroneMedicationBatchSnapshot> record = droneManager.getNextBatch();
             int batchId = 0;
 
             if(record.isPresent()){
-                System.out.println("current top medication batch record " + record.get());
                 batchId = record.get().getBatch();
             }
 
@@ -102,7 +105,7 @@ public class DroneLoaderComponent {
                     }
 
                     int totalWeight = loadedItems.stream().mapToInt(Medication::getWeight).sum();
-                    message = String.format("total weight of items loaded for drone :: %d  with %s", totalWeight, loadedItems);
+                    message = String.format("total weight of items loaded for drone ( %s) with size %d  is %d ::  %s", cachedDrone.getSerialNumber(), cachedDrone.getWeight(), totalWeight);
                     publishEventMessage(message);
 
                     // get next batch

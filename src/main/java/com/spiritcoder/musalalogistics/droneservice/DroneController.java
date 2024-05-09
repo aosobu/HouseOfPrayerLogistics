@@ -33,4 +33,9 @@ public class DroneController {
     public ResponseEntity<?> getLoadableDrones() {
         return ResponseEntity.ok(droneService.getLoadableDrones());
     }
+
+    @GetMapping("/battery")
+    public ResponseEntity<?> getBatteryLevel(@RequestParam int droneId) {
+        return ResponseEntity.ok(droneService.getBatteryLevel(droneId));
+    }
 }

@@ -1,0 +1,1 @@
+CREATE DATABASE MusalaLogistics COLLATE Latin1_General_100_CI_AI_SC_UTF8;

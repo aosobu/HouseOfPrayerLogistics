@@ -40,5 +40,7 @@ public class AppConstants {
 
     public static final String DRONE_IN_IDLE_STATE = "drone is currently idle - you can load the drone";
 
+    public static final String NO_DRONE_IN_IDLE_STATE = "no drones are available for loading";
+
     public static final String DRONE_LOAD_ALLOWABLE_BATTERY_LEVEL = "drone.loading.battery.level";
 }

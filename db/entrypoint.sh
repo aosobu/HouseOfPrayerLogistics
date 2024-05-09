@@ -1,0 +1,1 @@
+$HOME/Documents/musala-logistics-roughsheet/db/run-initialization.sh & /opt/mssql/bin/sqlservr

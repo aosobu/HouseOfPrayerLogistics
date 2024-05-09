@@ -165,10 +165,12 @@ public class DroneRegisterComponent {
     }
 
     private DroneResponse buildSuccessRegistrationDroneResponse() {
+        DroneDTO droneDTO = new DroneDTO();
+        droneDTO.setId(droneId);
         return DroneResponse
                 .builder()
                 .message(AppConstants.SUCCESS_MESSAGE)
-                .droneDTO(new DroneDTO(droneId, null))
+                .droneDTO(droneDTO)
                 .errors(new ArrayList<>())
                 .build();
     }

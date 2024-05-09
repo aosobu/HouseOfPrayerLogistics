@@ -133,6 +133,11 @@ public class DroneManagerImpl extends DroneManager {
     }
 
     @Override
+    public byte getBatteryLevel(int droneId) {
+        return droneBatterySnapshotRepository.getBatteryLevel(droneId);
+    }
+
+    @Override
     public boolean insertDroneBattery(int droneId, byte batteryLevel) {
         try{
             droneBatteryRepository.insertDroneBattery(droneId, batteryLevel, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);

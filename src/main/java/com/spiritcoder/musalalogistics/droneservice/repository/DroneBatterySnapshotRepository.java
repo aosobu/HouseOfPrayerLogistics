@@ -14,4 +14,7 @@ public interface DroneBatterySnapshotRepository extends JpaRepository<DroneBatte
     @Transactional
     @Query(value = "insert into DroneBatterySnapshot(battery, drone, creator, updater, created) values (?1, ?2, ?3, ?4, getDate())",  nativeQuery = true)
     void insertDroneBatterySnapshot(int batteryLevel, int droneId, String creator, String updater);
+
+    @Query(value = "select battery from DroneBatterySnapshot where drone = ?1 ", nativeQuery = true)
+    byte getBatteryLevel(int droneId);
 }

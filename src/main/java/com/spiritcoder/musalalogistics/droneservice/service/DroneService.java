@@ -2,7 +2,6 @@ package com.spiritcoder.musalalogistics.droneservice.service;
 
 import com.spiritcoder.musalalogistics.droneservice.api.DroneRequest;
 import com.spiritcoder.musalalogistics.droneservice.api.DroneResponse;
-import com.spiritcoder.musalalogistics.droneservice.dto.DroneRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,11 @@ public class DroneService {
         return droneOperations.getLoadedItems(droneId);
     }
 
-    public List<DroneRecord> getLoadableDrones() {
+    public DroneResponse getLoadableDrones() {
         return droneOperations.getLoadableDrones();
+    }
+
+    public DroneResponse getBatteryLevel(int droneId) {
+        return droneOperations.getBatteryLevel(droneId);
     }
 }
