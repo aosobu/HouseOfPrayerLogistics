@@ -26,6 +26,11 @@ public class DroneController {
 
     @GetMapping("/items")
     public ResponseEntity<?> getLoadedItems(@RequestParam int droneId) {
-        return ResponseEntity.ok(droneService.loadDrone(droneId));
+        return ResponseEntity.ok(droneService.getLoadedItems(droneId));
+    }
+
+    @GetMapping("/loading")
+    public ResponseEntity<?> getLoadableDrones() {
+        return ResponseEntity.ok(droneService.getLoadableDrones());
     }
 }

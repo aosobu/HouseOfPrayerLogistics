@@ -48,23 +48,26 @@ public class LoadDroneViaControllerComponent {
 
             }else {
 
-                droneResponse = loadDroneViaRepositoryDetails(droneId);
+                droneResponse = loadDroneUsingRepositoryDetails(droneId);
             }
 
         }catch(Exception exception){
             LOG.error(exception.getMessage());
-            droneResponse = loadDroneViaRepositoryDetails(droneId);
+            droneResponse = loadDroneUsingRepositoryDetails(droneId);
         }
 
         return droneResponse;
     }
 
-    private DroneResponse loadDroneViaRepositoryDetails(int droneId) {
+    private DroneResponse loadDroneUsingRepositoryDetails(int droneId) {
+
         DroneResponse droneResponse = new DroneResponse();
         Optional<Drone> droneForLoading = droneManager.checkIfDroneIsLoadable(droneId);
+
         if(droneForLoading.isPresent()){
             droneResponse = loadDrone(droneId);
         }
+
         return buldFailedDroneResponse();
     }
 
@@ -74,7 +77,7 @@ public class LoadDroneViaControllerComponent {
 
         if(isLoadedStateInCache){
 
-            return buildSuccessDroneResponse();
+            return buldFailedDroneResponse();
 
         }else{
 
@@ -84,7 +87,7 @@ public class LoadDroneViaControllerComponent {
     }
 
     private DroneResponse checkStateInCacheAndLoadDrone(int droneId) {
-        if( isIdleStateInCache(cacheManager, droneId)){
+        if( checkCacheForIdleState(cacheManager, droneId)){
             return loadDrone(droneId);
         }
         return buldFailedDroneResponse();
@@ -101,7 +104,7 @@ public class LoadDroneViaControllerComponent {
 
 
 
-    private boolean isIdleStateInCache(CacheManager cacheManager, int droneId) {
+    private boolean checkCacheForIdleState(CacheManager cacheManager, int droneId) {
         DroneMetadata cachedDrone = null;
 
         String droneKey = CacheUtil.generateKey(String.valueOf(droneId));

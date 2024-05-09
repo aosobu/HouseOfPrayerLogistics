@@ -22,4 +22,7 @@ public interface MedicationRepository extends JpaRepository<Medication, Integer>
     @Transactional
     @Query(value = "update Medication set batch = ?2 where id = ?1 ", nativeQuery = true)
     void updateMedicationRecordWithBatchId(int medicationId, int batchId);
+
+    @Query(value = "select M.* from Medication M inner join DroneActivitySnapshot DAS on DAS.batch = M.batch and DAS.state != 'IDLE' where DAS.drone = ?1", nativeQuery = true)
+    List<Medication> findAllItemsByDroneId(int droneId);
 }

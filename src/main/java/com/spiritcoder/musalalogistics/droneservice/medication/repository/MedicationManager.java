@@ -13,4 +13,6 @@ public abstract class MedicationManager {
     public abstract Optional<List<Medication>> findAllMedicationByBatchId(int batchId);
 
     public abstract void updateMedicationRecordWithBatchId(int medicationId, int batchId);
+
+    public abstract Optional<List<Medication>> getLoadedItems(int droneId);
 }

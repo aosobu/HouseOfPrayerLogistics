@@ -45,4 +45,13 @@ public class MedicationManagerImpl extends MedicationManager{
             LOG.error(exception.getMessage());
         }
     }
+
+    @Override
+    public Optional<List<Medication>> getLoadedItems(int droneId) {
+        try{
+            return Optional.of(medicationRepository.findAllItemsByDroneId(droneId));
+        }catch(Exception exception){
+            return Optional.empty();
+        }
+    }
 }

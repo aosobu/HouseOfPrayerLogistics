@@ -89,7 +89,7 @@ public class DroneLoaderComponent {
                     cachedDrone = (DroneMetadata) cachedDroneObject.get();
                 }
 
-                //TODO:: should backup algorithm to function optimally without cache for at while - in the event of a cache outage
+                //TODO:: should backup algorithm to function optimally without cache - in the event of a cache outage
                 assert cachedDrone != null;
                 if(cachedDrone.getCurrentBatteryLevel() > getAllowedLoadableBatteryLevel()){
 
