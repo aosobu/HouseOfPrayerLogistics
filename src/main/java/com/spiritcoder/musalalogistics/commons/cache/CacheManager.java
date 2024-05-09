@@ -1,6 +1,5 @@
 package com.spiritcoder.musalalogistics.commons.cache;
 
-import org.springframework.cache.Cache;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -13,9 +12,13 @@ public interface CacheManager {
 
     Optional<Object> get(String key, String cacheName);
 
-    Cache getCache(String name);
-
     Collection<String> getCacheNames();
 
+    <T> T getCacheKeys();
+
     boolean evictIfPresent(String key, String cacheName);
+
+    <T> boolean evictIfPresent(T object, String cacheName);
+
+    boolean isExists(String name);
 }

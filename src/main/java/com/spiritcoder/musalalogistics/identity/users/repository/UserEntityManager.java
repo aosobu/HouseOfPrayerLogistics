@@ -1,6 +1,5 @@
 package com.spiritcoder.musalalogistics.identity.users.repository;
 
-import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
 import com.spiritcoder.musalalogistics.identity.users.entity.User;
 import com.spiritcoder.musalalogistics.identity.users.enums.Role;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,8 @@ public class UserEntityManager {
         try{
             userRepository.saveUser(email, username, password, role.toString(), enabled, created, creator, updater);
             return userRepository.findByEmail(email);
-        }catch(MusalaLogisticsException musalaLogisticsException){
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+        }catch(Exception Exception){
+            LOG.error(Exception.getMessage(), Exception.getCause());
         }
         return Optional.empty();
     }

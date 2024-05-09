@@ -28,9 +28,9 @@ public class DroneRegisterComponent {
 
     private static final Logger LOG = LoggerFactory.getLogger(DroneRegisterComponent.class);
 
-    private final CacheFactory cacheFactory;
-
     private final DroneManager droneManager;
+
+    private final CacheFactory cacheFactory;
 
     private int droneId;
 
@@ -49,13 +49,17 @@ public class DroneRegisterComponent {
             boolean isOnboarded = onboardDrone(droneRequest);
 
             if(isOnboarded){
-                addDroneMetadataToCache(buildDroneCachableEntity(droneRequest));
-                return buildSuccessRegistrationDroneResponse();
+                boolean isSuccessfulCacheUpdate = addDroneMetadataToCache(buildDroneCachableEntity(droneRequest));
+                if(isSuccessfulCacheUpdate){
+                    return buildSuccessRegistrationDroneResponse();
+                }
+            }else{
+                return buildFailureRegistrationDroneResponse();
             }
 
         }catch(Exception ex){
-            //TODO:: add exception to exception table
-            LOG.error(ex.getMessage(), ex.getCause());
+            LOG.error(ex.getMessage());
+            return buildSuccessRegistrationDroneResponse();
         }
 
         return buildFailureRegistrationDroneResponse();
@@ -93,10 +97,12 @@ public class DroneRegisterComponent {
 
                     boolean isInsertDroneActivity = droneManager.insertDroneActivity(drone.getId(), StateEnum.IDLE.toString(), null);
 
+                    boolean isInsertDroneMedicationBatchSnapshot = droneManager.insertDroneMedicationBatchSnapshotRecord(0, droneId);
+
                     boolean isUpdateDroneActivationState = droneManager.updateActivationStatus(true, drone.getId());
 
                     publishMessage(isInsertDroneActivitySnapshot, isInsertDroneBatterySnapshot, isInsertDroneBattery, isInsertDroneActivity,
-                            isUpdateDroneActivationState, drone);
+                            isUpdateDroneActivationState, isInsertDroneMedicationBatchSnapshot, drone);
 
                 });
             }
@@ -119,8 +125,8 @@ public class DroneRegisterComponent {
                 .model(droneRequest.getModel().toString())
                 .weight(droneRequest.getWeight())
                 .activated(true)
-                .lastBatchId(null)
-                .currentBatchId(null)
+                .lastBatchId(0)
+                .currentBatchId(0)
                 .currentBatchList(new ArrayList<>())
                 .currentBatteryLevel(droneRequest.getBattery())
                 .lastBatteryLevel(droneRequest.getBattery())
@@ -131,11 +137,15 @@ public class DroneRegisterComponent {
 
     private boolean addDroneMetadataToCache(DroneMetadata droneMetadata) {
 
-        CacheManager cacheManager = cacheFactory.getCacheManager(CacheTypeEnum.SPRING_CACHE);
+        CacheManager cacheManager = cacheFactory.getCacheManager(CacheTypeEnum.REDIS);
 
-        if(cacheManager.getCacheNames().contains(AppConstants.DRONE_CACHE)){
+        if(cacheManager.isExists(AppConstants.DRONE_CACHE)){
             String key = CacheUtil.generateKey(String.valueOf(droneMetadata.getId()));
-            cacheManager.insert(key, droneMetadata, AppConstants.DRONE_CACHE);
+            boolean isCacheSuccess = cacheManager.insert(key, droneMetadata, AppConstants.DRONE_CACHE);
+            if(isCacheSuccess){
+                String message =  String.format(" Drone with id %d and serial number %s successfully cached", droneId, droneMetadata.getSerialNumber());
+                LOG.info(message);
+            }
             return true;
         }
 
@@ -143,9 +153,11 @@ public class DroneRegisterComponent {
     }
 
     private void publishMessage(boolean isInsertDroneActivitySnapshot, boolean isInsertDroneBatterySnapshot, boolean isInsertDroneBattery,
-                                boolean isInsertDroneActivity, boolean isUpdateDroneActivationState,  Drone drone){
+                                boolean isInsertDroneActivity, boolean isUpdateDroneActivationState, boolean isInsertDroneMedicationBatchSnapshot,  Drone drone){
 
-        if(isInsertDroneActivitySnapshot && isInsertDroneBatterySnapshot && isInsertDroneBattery && isInsertDroneActivity && isUpdateDroneActivationState){
+        if(isInsertDroneActivitySnapshot && isInsertDroneBatterySnapshot && isInsertDroneBattery &&
+                isInsertDroneActivity && isUpdateDroneActivationState && isInsertDroneMedicationBatchSnapshot){
+
             String message =  String.format(" Drone with id %d and serial number %s successfully activated", drone.getId(), drone.getSerial());
             LOG.info(message);
         }

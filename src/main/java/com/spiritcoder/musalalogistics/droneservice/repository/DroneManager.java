@@ -6,7 +6,8 @@ import com.spiritcoder.musalalogistics.droneservice.enums.ModelEnum;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class DroneManager implements DroneStateSnapshotManager, DroneBatterySnapshotManager, DroneBatteryManager, DroneActivityManager {
+public abstract class DroneManager implements DroneStateSnapshotManager, DroneBatterySnapshotManager,
+                                                DroneBatteryManager, DroneActivityManager, DroneMedicationBatchManager, DroneMedicationBatchSnapshotManager {
 
     public abstract Drone getDroneById(Integer id);
 
@@ -17,4 +18,8 @@ public abstract class DroneManager implements DroneStateSnapshotManager, DroneBa
     public abstract boolean insertDrone(String serialNumber, ModelEnum model, short weight);
 
     public abstract Optional<Drone> findDroneBySerialNumber(String serialNumber);
+
+    public abstract Optional<List<Drone>> findAllLoadableDrones();
+
+    public abstract Optional<Drone> checkIfDroneIsLoadable(int droneId);
 }

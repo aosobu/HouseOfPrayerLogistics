@@ -3,7 +3,6 @@ package com.spiritcoder.musalalogistics.workers.batchjobs;
 
 import com.spiritcoder.musalalogistics.commons.config.AppConstants;
 import com.spiritcoder.musalalogistics.commons.entity.Property;
-import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
 import com.spiritcoder.musalalogistics.commons.repository.PropertyManager;
 import lombok.RequiredArgsConstructor;
 import org.quartz.Job;
@@ -39,9 +38,9 @@ public class BatteryLevelSnapshotJob implements Job {
 
             unlockDroneBatteryProcess(property);
 
-        }catch(MusalaLogisticsException musalaLogisticsException){
+        }catch(Exception Exception){
 
-            throw new MusalaLogisticsException(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            throw new RuntimeException(Exception.getMessage(), Exception.getCause());
         }finally {
 
             unlockDroneBatteryProcess(property);
@@ -64,8 +63,8 @@ public class BatteryLevelSnapshotJob implements Job {
         try{
             propertyManager.updateProperty("true", property.getId());
 
-        }catch(MusalaLogisticsException musalaLogisticsException){
-            throw new MusalaLogisticsException(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+        }catch(Exception Exception){
+            throw new RuntimeException(Exception.getMessage(), Exception.getCause());
         }
     }
 
@@ -73,8 +72,8 @@ public class BatteryLevelSnapshotJob implements Job {
         try{
             propertyManager.updateProperty("false", property.getId());
 
-        }catch(MusalaLogisticsException musalaLogisticsException){
-            throw new MusalaLogisticsException(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+        }catch(Exception Exception){
+            throw new RuntimeException(Exception.getMessage(), Exception.getCause());
         }
     }
 
@@ -88,8 +87,8 @@ public class BatteryLevelSnapshotJob implements Job {
         try{
             property = propertyManager.getPropertyByKey(AppConstants.DRONE_BATTERY_PROCESS_ENABLED);
 
-        }catch (MusalaLogisticsException musalaLogisticsException){
-            throw new MusalaLogisticsException(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+        }catch (Exception Exception){
+            throw new RuntimeException(Exception.getMessage(), Exception.getCause());
         }
 
         property.orElseThrow();

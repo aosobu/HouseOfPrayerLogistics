@@ -1,15 +1,11 @@
 package com.spiritcoder.musalalogistics.droneservice.repository;
 
 import com.spiritcoder.musalalogistics.droneservice.entity.DroneActivitySnapshot;
-import com.spiritcoder.musalalogistics.droneservice.enums.StateEnum;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface DroneActivitySnapshotRepository extends JpaRepository<DroneActivitySnapshot, Integer> {
@@ -19,12 +15,9 @@ public interface DroneActivitySnapshotRepository extends JpaRepository<DroneActi
     @Query(value = "insert into DroneActivitySnapshot(drone, state, creator, updater, created) values (?1, ?2, ?3, ?4, getDate())", nativeQuery = true)
     void insertDroneActivitySnapshot(Integer droneId, String state, String creator, String updater);
 
-    @Query(value = "select * from DroneActivitySnapshot where state in ('IDLE')", nativeQuery = true)
-    Optional<List<DroneActivitySnapshot>> findAllLoadableDrones();
-
     @Modifying
     @Transactional
-    @Query(value = "update DroneActivitySnapshot set state  = ?1 where drone = ?2",  nativeQuery = true)
-    void updateDroneActivitySnapshot(String name, Integer id);
+    @Query(value = "update DroneActivitySnapshot set state  = ?1, batch = ?2 where drone = ?3",  nativeQuery = true)
+    void updateDroneActivitySnapshot(String state, int batch, Integer droneId);
 
 }

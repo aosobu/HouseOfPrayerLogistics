@@ -1,7 +1,7 @@
 package com.spiritcoder.musalalogistics.commons.cache;
 
-import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RKeys;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ public class SpringCacheManager implements CacheManager {
             if(isCacheExist(cacheName)) {
                 Objects.requireNonNull(cacheManager.getCache(cacheName)).put(key, object);
             }
-        }catch(MusalaLogisticsException musalaLogisticsException){
+        }catch(Exception Exception){
             return false;
         }
         return true;
@@ -42,7 +42,7 @@ public class SpringCacheManager implements CacheManager {
             if(isCacheExist(cacheName)) {
                 return Optional.ofNullable(Objects.requireNonNull(cacheManager.getCache(cacheName)).get(key));
             }
-        }catch(MusalaLogisticsException musalaLogisticsException){
+        }catch(Exception Exception){
             return Optional.empty();
         }
         return Optional.empty();
@@ -57,7 +57,22 @@ public class SpringCacheManager implements CacheManager {
     }
 
     @Override
+    public RKeys getCacheKeys() {
+        return null;
+    }
+
+    @Override
     public boolean evictIfPresent(String key, String cacheName) {
         return Objects.requireNonNull(cacheManager.getCache(cacheName)).evictIfPresent(key);
+    }
+
+    @Override
+    public <T> boolean evictIfPresent(T object, String cacheName) {
+        return false;
+    }
+
+    @Override
+    public boolean isExists(String name) {
+        return false;
     }
 }

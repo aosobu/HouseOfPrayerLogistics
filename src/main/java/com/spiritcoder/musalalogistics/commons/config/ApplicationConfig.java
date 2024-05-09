@@ -5,8 +5,12 @@ import com.spiritcoder.musalalogistics.commons.repository.PropertyManager;
 import com.spiritcoder.musalalogistics.identity.users.repository.UserRepository;
 import com.spiritcoder.musalalogistics.workers.JobScheduler;
 import com.spiritcoder.musalalogistics.workers.SchedulerFacade;
+import com.spiritcoder.musalalogistics.workers.batchjobs.DroneLazyLoaderJob;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.redisson.Redisson;
+import org.redisson.api.RMap;
+import org.redisson.api.RedissonClient;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -41,10 +45,22 @@ public class ApplicationConfig {
 
     @Bean()
     public CacheManager cacheManager() {
-        if(Objects.isNull(getCacheList())) {
+        if(Objects.isNull(getCacheKeys())) {
             return new ConcurrentMapCacheManager();
         }
-        return new ConcurrentMapCacheManager(getCacheList());
+        return new ConcurrentMapCacheManager(getCacheKeys());
+    }
+
+    @Bean()
+    public RedissonClient redissonClient() {
+        RedissonClient redissonClient = Redisson.create();
+        RMap<String, Object> map = redissonClient.getMap(AppConstants.DRONE_CACHE);
+
+        if(!map.isExists()) {
+            map.put(AppConstants.DRONE_CACHE_INIT, AppConstants.DRONE_CACHE_INIT);
+        }
+
+        return redissonClient;
     }
 
     @Bean
@@ -73,10 +89,10 @@ public class ApplicationConfig {
 
     @PostConstruct
     public void initScheduler(){
-        //schedulerFacade.scheduleJob(DroneLazyLoaderJob.class, null);
+        schedulerFacade.scheduleJob(DroneLazyLoaderJob.class, null);
     }
 
-    private String[] getCacheList(){
+    private String[] getCacheKeys(){
         List<Property> propertyList;
         String [] cacheArray = null;
 

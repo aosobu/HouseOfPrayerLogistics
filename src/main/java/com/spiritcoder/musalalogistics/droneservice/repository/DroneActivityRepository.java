@@ -12,6 +12,6 @@ public interface DroneActivityRepository extends JpaRepository<DroneActivity, In
 
     @Modifying
     @Transactional
-    @Query(value = "insert into DroneActivity(drone, types, batch, creator, updater, created) values (?1, ?2, ?3, ?4, ?5, getDate())", nativeQuery = true)
+    @Query(value = "insert into DroneActivity(drone, type, batch, creator, updater, created) values (?1, ?2, ?3, ?4, ?5, getDate())", nativeQuery = true)
     void insertDroneActivity(int droneId, String state, Integer batch, String creator, String updater);
 }

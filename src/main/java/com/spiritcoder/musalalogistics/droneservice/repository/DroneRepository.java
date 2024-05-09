@@ -31,4 +31,11 @@ public interface DroneRepository extends JpaRepository<Drone, Integer> {
 
     @Query(value = "select * from drone where serial = ?1", nativeQuery = true)
     Optional<Drone> findDroneBySerialNumber(String serial);
+
+    @Query(value = "select D.* from Drone D inner join DroneActivitySnapshot DAS on D.id = DAS.drone and DAS.state = 'IDLE' and DAS.batch is NULL", nativeQuery = true)
+    Optional<List<Drone>> findAllLoadableDrones(); // assumption: batch will always be set to null whenever state is updated to IDLE
+
+    @Query(value = "select D.* from Drone D inner join DroneActivitySnapshot DAS on D.id = DAS.drone and DAS.state = 'IDLE' and DAS.batch is NULL where DAS.drone = ?1", nativeQuery = true)
+    Optional<Drone> checkIfDroneIsLoadable(int droneId);
+
 }

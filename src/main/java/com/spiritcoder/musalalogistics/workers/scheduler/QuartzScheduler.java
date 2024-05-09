@@ -22,7 +22,7 @@ public class QuartzScheduler {
 
     private String getCronExpression(String className){
         String cronExpression = getReloadableProperty(className);
-        String DEFAULT_TIMER = "0 0/59 * 1/1 * ? *";
+        String DEFAULT_TIMER = "0 0/1 * 1/1 * ? *";
         if(Objects.isNull(cronExpression))
             return DEFAULT_TIMER;
         return cronExpression;

@@ -26,9 +26,17 @@ public class AppConstants {
 
     public static final String DRONE_CACHE = "drone";
 
+    public static final String DRONE_CACHE_INIT = "#init";
+
     public static final String SUCCESS_MESSAGE = "success";
+
+    public static final String DRONE_LOAD_SUCCESS_MESSAGE = "drone loaded successfully";
 
     public static final String DUPLICATE_REGISTRATION = "duplicate registration";
 
     public static final String FAILURE_REGISTRATION = "problem encountered during registration - please try again later";
+
+    public static final String DRONE_UNAVAILABLE_FOR_LOADING = "drone is not avialable for loading - try agian later";
+
+    public static final String DRONE_LOAD_ALLOWABLE_BATTERY_LEVEL = "drone.loading.battery.level";
 }

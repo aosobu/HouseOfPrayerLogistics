@@ -1,7 +1,6 @@
 package com.spiritcoder.musalalogistics.commons.repository;
 
 import com.spiritcoder.musalalogistics.commons.entity.Property;
-import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +28,8 @@ public class PropertyManagerImpl implements PropertyManager{
         try{
             propertyRepository.updateProperty(value, id);
 
-        }catch(MusalaLogisticsException musalaLogisticsException){
-            throw new MusalaLogisticsException(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+        }catch(Exception Exception){
+            throw new RuntimeException(Exception.getMessage(), Exception.getCause());
         }
     }
 }

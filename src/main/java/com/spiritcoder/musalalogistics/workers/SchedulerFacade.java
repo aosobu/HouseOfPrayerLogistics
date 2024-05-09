@@ -1,7 +1,6 @@
 package com.spiritcoder.musalalogistics.workers;
 
 import com.spiritcoder.musalalogistics.commons.config.AppConstants;
-import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +28,11 @@ public class SchedulerFacade {
             schedulerType = schedulerType.toLowerCase().concat(AppConstants.SCHEDULE_SUFFIX);
             jobScheduleMap.get(schedulerType).scheduleJob(jobClass);
 
-        }catch (MusalaLogisticsException musalaLogisticsException){
+        }catch (Exception Exception){
 
             String message = String.format("%s was not scheduled with %s", jobClass.getSimpleName(), schedulerType);
             LOG.error(message);
-            throw new MusalaLogisticsException(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            throw new RuntimeException(Exception.getMessage(), Exception.getCause());
         }
 
         String message = String.format("%s was scheduled with %s", jobClass.getSimpleName(), schedulerType);

@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DroneService {
 
-    private final DroneOperationsFacade droneOperationsFacade;
+    private final DroneOperationsFacade droneOperations;
 
     public DroneResponse registerDrone(DroneRequest droneRequest){
-        return droneOperationsFacade.registerDrone(droneRequest);
+        return droneOperations.registerDrone(droneRequest);
     }
 
     public DroneResponse loadDrone(int droneId){
-        return droneOperationsFacade.loadDrone(droneId);
+        return droneOperations.loadDrone(droneId);
     }
 }

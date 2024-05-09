@@ -10,7 +10,7 @@ BEGIN
         created DATETIME NOT NULL,
         updated DATETIME DEFAULT(getDate()),
         creator varchar(50),
-        updater varchar(50)
+        updater varchar(50) 
     )
 END
 
@@ -19,8 +19,8 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='UserAudit' and xtype='U')
 BEGIN
     CREATE TABLE UserAudit (
         id INT IDENTITY(1,1) PRIMARY KEY,
-        event varchar(50) NOT NULL,
-        details varchar(255) NOT NULL,
+        event varchar(50) NOT NULL ,
+        details varchar(255) NOT NULL ,
         initiator INT FOREIGN KEY REFERENCES Users(id),
         created DATETIME NOT NULL,
         updated DATETIME DEFAULT(getDate()),

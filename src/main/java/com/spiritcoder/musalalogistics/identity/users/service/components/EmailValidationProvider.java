@@ -19,17 +19,24 @@ public class EmailValidationProvider implements ValidatorManager {
 
     @Override
     public UserResponse validate(UserRequest userRequest, UserResponse userResponse) {
+        Optional<User> existingUserWithRequestEmail;
 
-        String email = userRequest.getEmail();
-        Optional<User> existingUserWithRequestEmail = userEntityManager.getUserByEmail(email);
+        try{
 
-        existingUserWithRequestEmail.ifPresent(user -> {
+            String email = userRequest.getEmail();
+            existingUserWithRequestEmail = userEntityManager.getUserByEmail(email);
 
-            List<String> existingErrorList = userResponse.getErrors();
-            existingErrorList.add(AppConstants.EMAIL_ALREADY_EXISTS);
-            userResponse.setErrors(existingErrorList);
+            existingUserWithRequestEmail.ifPresent(user -> {
 
-        });
+                List<String> existingErrorList = userResponse.getErrors();
+                existingErrorList.add(AppConstants.EMAIL_ALREADY_EXISTS);
+                userResponse.setErrors(existingErrorList);
+
+            });
+
+        }catch(Exception exception){
+            throw new RuntimeException(exception.getMessage());
+        }
 
         return userResponse;
     }

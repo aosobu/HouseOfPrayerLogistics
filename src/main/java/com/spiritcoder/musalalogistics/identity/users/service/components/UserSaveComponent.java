@@ -31,9 +31,7 @@ public class UserSaveComponent {
         validationResponseContainer[0] = userResponse;
 
         validatorProviders
-                .forEach( validatorProvider ->{
-                            validationResponseContainer[0] = validatorProvider.validate(userRequest, validationResponseContainer[0]);
-                });
+                .forEach( validatorProvider -> validationResponseContainer[0] = validatorProvider.validate(userRequest, validationResponseContainer[0]));
 
 
         UserResponse validationResponse = validationResponseContainer[0];

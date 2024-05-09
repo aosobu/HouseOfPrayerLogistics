@@ -34,6 +34,7 @@ public class QuartzSchedulerService {
     public void init(){
         try{
             scheduler.start();
+            LOG.info("scheduler staring up .....");
         }catch (SchedulerException schedulerException){
             LOG.error(schedulerException.getMessage());
         }
@@ -43,6 +44,7 @@ public class QuartzSchedulerService {
     public void preDestroy(){
         try{
             scheduler.shutdown();
+            LOG.info("schdeuler shutting down ......");
         }catch (SchedulerException schedulerException){
             LOG.error(schedulerException.getMessage());
         }

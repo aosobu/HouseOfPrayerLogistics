@@ -1,9 +1,8 @@
 package com.spiritcoder.musalalogistics.droneservice.repository;
 
 import com.spiritcoder.musalalogistics.commons.config.AppConstants;
-import com.spiritcoder.musalalogistics.commons.exception.MusalaLogisticsException;
 import com.spiritcoder.musalalogistics.droneservice.entity.Drone;
-import com.spiritcoder.musalalogistics.droneservice.entity.DroneActivitySnapshot;
+import com.spiritcoder.musalalogistics.droneservice.entity.DroneMedicationBatchSnapshot;
 import com.spiritcoder.musalalogistics.droneservice.enums.ModelEnum;
 import com.spiritcoder.musalalogistics.droneservice.enums.StateEnum;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,10 @@ public class DroneManagerImpl extends DroneManager {
 
     private final DroneActivityRepository droneActivityRepository;
 
+    private final DroneMedicationBatchRepository droneMedicationBatchRepository;
+
+    private final DroneMedicationBatchSnapshotRepository droneMedicationBatchSnapshotRepository;
+
 
     @Override
     public Optional<List<Drone>> getAllInActiveDrones() {
@@ -40,9 +43,9 @@ public class DroneManagerImpl extends DroneManager {
         try{
             droneRepository.updateActivationStatus(state, id);
 
-        }catch(MusalaLogisticsException musalaLogisticsException){
+        }catch(Exception Exception){
 
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            LOG.error(Exception.getMessage(), Exception.getCause());
             return false;
         }
         return true;
@@ -53,9 +56,9 @@ public class DroneManagerImpl extends DroneManager {
         try{
             droneRepository.insertDrone(serial, model.toString(), weight, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
-        }catch(MusalaLogisticsException musalaLogisticsException){
+        }catch(Exception Exception){
 
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            LOG.error(Exception.getMessage(), Exception.getCause());
             return false;
         }
         return true;
@@ -66,9 +69,9 @@ public class DroneManagerImpl extends DroneManager {
         try{
             droneActivitySnapshotRepository.insertDroneActivitySnapshot(droneId, stateEnum.toString(), AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
-        }catch(MusalaLogisticsException musalaLogisticsException){
+        }catch(Exception Exception){
 
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            LOG.error(Exception.getMessage(), Exception.getCause());
             return false;
         }
         return true;
@@ -80,32 +83,37 @@ public class DroneManagerImpl extends DroneManager {
     }
 
     @Override
+    public Optional<List<Drone>> findAllLoadableDrones() {
+        return droneRepository.findAllLoadableDrones();
+    }
+
+    @Override
+    public Optional<Drone> checkIfDroneIsLoadable(int droneId) {
+        return droneRepository.checkIfDroneIsLoadable(droneId);
+    }
+
+    @Override
     public Drone getDroneById(Integer id) {
 
         try{
            Optional<Drone> drone =  droneRepository.findById(id);
            return drone.orElse(null);
 
-        }catch(MusalaLogisticsException musalaLogisticsException){
+        }catch(Exception Exception){
 
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            LOG.error(Exception.getMessage(), Exception.getCause());
             return null;
         }
     }
 
     @Override
-    public Optional<List<DroneActivitySnapshot>> findAllLoadableDrones() {
-        return droneActivitySnapshotRepository.findAllLoadableDrones();
-    }
-
-    @Override
-    public boolean updateDroneStateSnapshot(String name, Integer id) {
+    public boolean updateDroneActivitySnapshot(String state, Integer batchId, Integer droneId) {
         try{
-            droneActivitySnapshotRepository.updateDroneActivitySnapshot(name, id);
+            droneActivitySnapshotRepository.updateDroneActivitySnapshot(state, batchId,  droneId);
 
-        }catch (MusalaLogisticsException musalaLogisticsException){
+        }catch (Exception Exception){
 
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            LOG.error(Exception.getMessage(), Exception.getCause());
             return false;
         }
         return true;
@@ -116,9 +124,9 @@ public class DroneManagerImpl extends DroneManager {
         try{
             droneBatterySnapshotRepository.insertDroneBatterySnapshot(battery, droneId, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
-        }catch (MusalaLogisticsException musalaLogisticsException){
+        }catch (Exception Exception){
 
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            LOG.error(Exception.getMessage(), Exception.getCause());
             return false;
         }
         return true;
@@ -129,9 +137,9 @@ public class DroneManagerImpl extends DroneManager {
         try{
             droneBatteryRepository.insertDroneBattery(droneId, batteryLevel, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
-        }catch (MusalaLogisticsException musalaLogisticsException){
+        }catch (Exception Exception){
 
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            LOG.error(Exception.getMessage(), Exception.getCause());
             return false;
         }
         return true;
@@ -142,9 +150,60 @@ public class DroneManagerImpl extends DroneManager {
         try{
             droneActivityRepository.insertDroneActivity(droneId, state, batch, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
 
-        }catch (MusalaLogisticsException musalaLogisticsException){
+        }catch (Exception Exception){
 
-            LOG.error(musalaLogisticsException.getMessage(), musalaLogisticsException.getCause());
+            LOG.error(Exception.getMessage(), Exception.getCause());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean insertDroneMedicationBatchRecord(int batchId, int droneId) {
+        try{
+            droneMedicationBatchRepository.insertDroneMedicationBatchRecord(batchId, droneId, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
+
+        }catch (Exception Exception){
+
+            LOG.error(Exception.getMessage(), Exception.getCause());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Optional<DroneMedicationBatchSnapshot> getNextBatch() {
+        try{
+            return Optional.of(droneMedicationBatchSnapshotRepository.getNextBatch());
+
+        }catch (Exception Exception){
+
+            LOG.error(Exception.getMessage(), Exception.getCause());
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public boolean updateDroneMedicationBatchSnapshotRecord(int batchId, int droneId) {
+        try{
+            droneMedicationBatchSnapshotRepository.updateDroneMedicationBatchSnapshotRepository(batchId, droneId);
+
+        }catch (Exception Exception){
+
+            LOG.error(Exception.getMessage(), Exception.getCause());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean insertDroneMedicationBatchSnapshotRecord(int batchId, int droneId) {
+        try{
+            droneMedicationBatchSnapshotRepository.insertDroneMedicationBatchSnapshotRecord(batchId, droneId, AppConstants.SYSTEM_USER, AppConstants.SYSTEM_USER);
+
+        }catch (Exception Exception){
+
+            LOG.error(Exception.getMessage(), Exception.getCause());
             return false;
         }
         return true;
