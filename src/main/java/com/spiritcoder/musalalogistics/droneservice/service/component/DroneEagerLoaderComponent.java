@@ -42,7 +42,7 @@ public class DroneEagerLoaderComponent {
 
             cacheManager = cacheFactory.getCacheManager(CacheTypeEnum.REDIS);
 
-            if(cacheManager.isExists(AppConstants.DRONE_CACHE)){
+            if(cacheManager.isCacheAvailable(AppConstants.DRONE_CACHE)){
 
                 droneResponse = loadDroneUsingCacheDetails(cacheManager, droneId);
 
@@ -66,6 +66,7 @@ public class DroneEagerLoaderComponent {
 
         if(droneForLoading.isPresent()){
             droneResponse = loadDrone(droneId);
+            return droneResponse;
         }
 
         return buldFailedDroneResponse();

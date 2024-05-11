@@ -1,6 +1,8 @@
 package com.spiritcoder.musalalogistics.commons.cache;
 
 
+import com.spiritcoder.musalalogistics.commons.util.NetworkUtil;
+
 import java.util.Collection;
 import java.util.Optional;
 
@@ -21,4 +23,6 @@ public interface CacheManager {
     <T> boolean evictIfPresent(T object, String cacheName);
 
     boolean isExists(String name);
+
+    boolean isCacheAvailable(String cacheName);
 }

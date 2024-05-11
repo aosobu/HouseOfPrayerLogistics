@@ -1,7 +1,9 @@
 package com.spiritcoder.musalalogistics.commons.cache;
 
+import com.spiritcoder.musalalogistics.commons.util.NetworkUtil;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RKeys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +17,15 @@ public class SpringCacheManager implements CacheManager {
 
     private final org.springframework.cache.CacheManager cacheManager;
 
+    @Value("${server.host.ip}")
+    private String ip = "127.0.0.1";
+
+    @Value("${spring.server.port}")
+    private Integer port;
+
     @Override
     public boolean ping() {
-        return false;
+         return NetworkUtil.ping(ip, port);
     }
 
     @Override
@@ -74,5 +82,10 @@ public class SpringCacheManager implements CacheManager {
     @Override
     public boolean isExists(String name) {
         return false;
+    }
+
+    @Override
+    public boolean isCacheAvailable(String cacheName) {
+        return ping() || isCacheExist(cacheName);
     }
 }

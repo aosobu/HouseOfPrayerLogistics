@@ -14,32 +14,30 @@ services:
     volumes:
       - redis_data:/data
 
-  db:
-    build: $HOME/Documents/musala-logistics-roughsheet/db
-    ports:
-      - 1433:1433
-
-#  musala-logistics:
-#    depends_on:
-#      - redis
-#      - mssql-server
-#    build: ./Users/osobu/Documents/musala-logistics-roughsheet
-#    restart: on-failure
-#    env_file: ./.env
+#  db:
+#    build: $HOME/Documents/musala-logistics-roughsheet/db
 #    ports:
-#      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
-#    environment:
-#      SPRING_APPLICATION_JSON: '{
-#          "spring.datasource.url"  : "jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$MYSQLDB_DATABASE?useSSL=false",
-#          "spring.datasource.username" : "$MYSQLDB_USER",
-#          "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
-#          "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-#          "spring.jpa.hibernate.ddl-auto" : "update"
-#        }'
-#    volumes:
-#      - .m2:/root/.m2
-#    stdin_open: true
-#    tty: true
+#      - 1433:1433
+
+  musala-logistics:
+    depends_on:
+      - redis
+#      - mssql-server
+    build: ./Users/osobu/Documents/musala-logistics-roughsheet
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_APPLICATION_JSON: '{
+           "spring.datasource.url" : "jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=MusalaLogisticsV2"
+           "spring.datasource.username" : "SA"
+           "spring.datasource.password" : "myPassword@123"
+        }'
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
 
 volumes:
   redis_data:

@@ -1,9 +1,11 @@
 package com.spiritcoder.musalalogistics.commons.cache;
 
+import com.spiritcoder.musalalogistics.commons.util.NetworkUtil;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RKeys;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -14,11 +16,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RedisCacheManager implements CacheManager{
 
+    @Value("${server.host.ip}")
+    private final String ip = "127.0.0.1";
+
+    private final Integer port = 6379;
+
     private final RedissonClient redissonClient;
 
     @Override
     public boolean ping() {
-        return false;
+        return NetworkUtil.ping(ip, port);
     }
 
     public <T> boolean insert(String key, T object, String cacheName) {
@@ -51,7 +58,17 @@ public class RedisCacheManager implements CacheManager{
     }
 
     public boolean isExists(String name) {
-       return redissonClient.getMap(name).isExists();
+        try{
+            redissonClient.getMap(name).isExists();
+            return true;
+        }catch(Exception exception){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isCacheAvailable(String cacheName) {
+        return ping() || isExists(cacheName);
     }
 
     public boolean evictIfPresent(String key, String cacheName) {

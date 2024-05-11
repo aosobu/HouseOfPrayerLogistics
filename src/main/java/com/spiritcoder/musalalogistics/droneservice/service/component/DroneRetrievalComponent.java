@@ -46,7 +46,7 @@ public class DroneRetrievalComponent {
         try{
             cacheManager = cacheFactory.getCacheManager(CacheTypeEnum.REDIS);
 
-            if(cacheManager.isExists(AppConstants.DRONE_CACHE)){
+            if(cacheManager.isCacheAvailable(AppConstants.DRONE_CACHE)){
 
                 droneResponse = getLoadedItemsFromCache(cacheManager, droneId);
 
