@@ -49,10 +49,7 @@ public class DroneRegisterComponent {
             boolean isOnboarded = onboardDrone(droneRequest);
 
             if(isOnboarded){
-                boolean isSuccessfulCacheUpdate = addDroneMetadataToCache(buildDroneCachableEntity(droneRequest));
-                if(isSuccessfulCacheUpdate){
-                    return buildSuccessRegistrationDroneResponse();
-                }
+                return updateCacheWithDroneRecord(droneRequest);
             }else{
                 return buildFailureRegistrationDroneResponse();
             }
@@ -61,8 +58,19 @@ public class DroneRegisterComponent {
             LOG.error(ex.getMessage());
             return buildSuccessRegistrationDroneResponse();
         }
+    }
 
-        return buildFailureRegistrationDroneResponse();
+    private DroneResponse updateCacheWithDroneRecord(DroneRequest droneRequest) {
+
+        boolean isSuccessfulCacheUpdate = addDroneMetadataToCache(buildDroneCachableEntity(droneRequest));
+
+        if(isSuccessfulCacheUpdate){
+            String message =  String.format(AppConstants.DRONE_CACHE_SUCCESS, droneId, droneRequest.getSerialNumber());
+            LOG.info(message);
+            return buildSuccessRegistrationAndCachedDroneResponse();
+        }
+
+        return buildSuccessRegistrationDroneResponse();
     }
 
     private boolean checkDuplicateRegistration(DroneRequest droneRequest) {
@@ -71,6 +79,7 @@ public class DroneRegisterComponent {
     }
 
     /**
+     * Performs onboarding of newly registered drone
      * performs side effect on droneId
      * @param droneRequest
      * @return
@@ -115,6 +124,17 @@ public class DroneRegisterComponent {
     }
 
 
+    private boolean addDroneMetadataToCache(DroneMetadata droneMetadata) {
+
+        CacheManager cacheManager = cacheFactory.getCacheManager(CacheTypeEnum.REDIS);
+
+        if(cacheManager.isCacheAvailable(AppConstants.DRONE_CACHE)){
+            String key = CacheUtil.generateKey(String.valueOf(droneMetadata.getId()));
+            return cacheManager.insert(key, droneMetadata, AppConstants.DRONE_CACHE);
+        }
+
+        return false;
+    }
 
     private DroneMetadata buildDroneCachableEntity(DroneRequest droneRequest) {
 
@@ -135,23 +155,6 @@ public class DroneRegisterComponent {
 
     }
 
-    private boolean addDroneMetadataToCache(DroneMetadata droneMetadata) {
-
-        CacheManager cacheManager = cacheFactory.getCacheManager(CacheTypeEnum.REDIS);
-
-        if(cacheManager.isExists(AppConstants.DRONE_CACHE)){
-            String key = CacheUtil.generateKey(String.valueOf(droneMetadata.getId()));
-            boolean isCacheSuccess = cacheManager.insert(key, droneMetadata, AppConstants.DRONE_CACHE);
-            if(isCacheSuccess){
-                String message =  String.format(" Drone with id %d and serial number %s successfully cached", droneId, droneMetadata.getSerialNumber());
-                LOG.info(message);
-            }
-            return true;
-        }
-
-        return false;
-    }
-
     private void publishMessage(boolean isInsertDroneActivitySnapshot, boolean isInsertDroneBatterySnapshot, boolean isInsertDroneBattery,
                                 boolean isInsertDroneActivity, boolean isUpdateDroneActivationState, boolean isInsertDroneMedicationBatchSnapshot,  Drone drone){
 
@@ -164,13 +167,16 @@ public class DroneRegisterComponent {
 
     }
 
+    private DroneResponse buildSuccessRegistrationAndCachedDroneResponse() {
+        return buildSuccessRegistrationDroneResponse();
+    }
+
     private DroneResponse buildSuccessRegistrationDroneResponse() {
-        DroneDTO droneDTO = new DroneDTO();
-        droneDTO.setId(droneId);
+
         return DroneResponse
                 .builder()
                 .message(AppConstants.SUCCESS_MESSAGE)
-                .droneDTO(droneDTO)
+                .droneDTO(buildDroneDTO(droneId))
                 .errors(new ArrayList<>())
                 .build();
     }
@@ -196,5 +202,11 @@ public class DroneRegisterComponent {
         ArrayList<String> errors = new ArrayList<>();
         errors.add(errorMessage);
         return  errors;
+    }
+
+    private DroneDTO buildDroneDTO(int droneId){
+        DroneDTO droneDTO = new DroneDTO();
+        droneDTO.setId(droneId);
+        return droneDTO;
     }
 }

@@ -43,4 +43,6 @@ public class AppConstants {
     public static final String NO_DRONE_IN_IDLE_STATE = "no drones are available for loading";
 
     public static final String DRONE_LOAD_ALLOWABLE_BATTERY_LEVEL = "drone.loading.battery.level";
+
+    public static final String DRONE_CACHE_SUCCESS = "Drone with id %d and serial number %s successfully cached";
 }
