@@ -44,7 +44,7 @@ public class DroneEagerLoaderComponent {
 
             if(cacheManager.isCacheAvailable(AppConstants.DRONE_CACHE)){
 
-                droneResponse = loadDroneUsingCacheDetails(cacheManager, droneId);
+                droneResponse = loadDroneUsingCacheDetails(droneId);
 
             }else {
 
@@ -61,7 +61,7 @@ public class DroneEagerLoaderComponent {
 
     private DroneResponse loadDroneUsingRepositoryDetails(int droneId) {
 
-        DroneResponse droneResponse = new DroneResponse();
+        DroneResponse droneResponse;
         Optional<Drone> droneForLoading = droneManager.checkIfDroneIsLoadable(droneId);
 
         if(droneForLoading.isPresent()){
@@ -72,7 +72,7 @@ public class DroneEagerLoaderComponent {
         return buldFailedDroneResponse();
     }
 
-    private DroneResponse loadDroneUsingCacheDetails(CacheManager cacheManager, int droneId) {
+    private DroneResponse loadDroneUsingCacheDetails(int droneId) {
 
         boolean isLoadedStateInCache = checkCacheForLoadState(droneId);
 
@@ -88,7 +88,7 @@ public class DroneEagerLoaderComponent {
     }
 
     private DroneResponse checkStateInCacheAndLoadDrone(int droneId) {
-        if( checkCacheForIdleState(cacheManager, droneId)){
+        if( checkCacheForIdleState(droneId)){
             return loadDrone(droneId);
         }
         return buldFailedDroneResponse();
@@ -105,7 +105,7 @@ public class DroneEagerLoaderComponent {
 
 
 
-    private boolean checkCacheForIdleState(CacheManager cacheManager, int droneId) {
+    private boolean checkCacheForIdleState(int droneId) {
         DroneMetadata cachedDrone = null;
 
         String droneKey = CacheUtil.generateKey(String.valueOf(droneId));
@@ -141,7 +141,7 @@ public class DroneEagerLoaderComponent {
         return buildDroneResponse(null, AppConstants.DRONE_LOAD_SUCCESS_MESSAGE);
     }
 
-    public DroneResponse buildDroneResponse(String errorMessage, String message){
+    private DroneResponse buildDroneResponse(String errorMessage, String message){
         return DroneResponse
                 .builder()
                 .message(message)

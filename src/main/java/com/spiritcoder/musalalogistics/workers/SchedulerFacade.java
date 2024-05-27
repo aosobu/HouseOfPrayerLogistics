@@ -31,12 +31,16 @@ public class SchedulerFacade {
         }catch (Exception Exception){
 
             String message = String.format("%s was not scheduled with %s", jobClass.getSimpleName(), schedulerType);
-            LOG.error(message);
+            publishMessage(message);
             throw new RuntimeException(Exception.getMessage(), Exception.getCause());
         }
 
         String message = String.format("%s was scheduled with %s", jobClass.getSimpleName(), schedulerType);
-        LOG.info(message);
+        publishMessage(message);
         schedulerType = SchedulerTypeEnum.QUARTZ.toString(); // reset to default
+    }
+
+    private <T> void publishMessage(String message){
+        LOG.info(message);
     }
 }

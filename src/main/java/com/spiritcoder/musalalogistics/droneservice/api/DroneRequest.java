@@ -15,7 +15,7 @@ public class DroneRequest {
     private ModelEnum model;
 
     @Min(value = 200, message = "weight should not be less than 200")
-    @Max(value = 500, message = "weight should not be greater than 5000")
+    @Max(value = 500, message = "weight should not be greater than 500")
     @NotNull(message = "weight cannot be null or empty")
     private Short weight;
 

@@ -34,9 +34,8 @@ public class DroneLazyLoaderJob implements Job {
 
         try{
 
-            if(!isDroneLoadingProcessingEnabled()){
-                return; //prevents race condition
-            }
+            if(!isDroneLoadingProcessingEnabled()){return;} //prevents race condition
+
             processLock = lockDroneLoadingProcess(property);
 
             droneLoader.loadDrone(null, LoadTypeEnum.LAZY);

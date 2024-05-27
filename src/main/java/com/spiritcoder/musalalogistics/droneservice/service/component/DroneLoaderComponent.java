@@ -109,7 +109,6 @@ public class DroneLoaderComponent {
                     publishEventMessage(message);
 
                     // get next batch
-
                     if(record.isPresent()){
                         AtomicInteger nextBatch = new AtomicInteger();
                         batchId = batchId + 1;

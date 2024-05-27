@@ -5,8 +5,6 @@ import com.spiritcoder.musalalogistics.droneservice.api.DroneResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class DroneService {

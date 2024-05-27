@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {"/h2-console/**", "/api/v1/auth/**", "/api/v1/users/register"};
+    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**", "/api/v1/users/register"};
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
